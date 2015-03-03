@@ -3,3 +3,4 @@ syntax: glob
 database-import/target/*
 *.ipr
 *.iws
+target/*
