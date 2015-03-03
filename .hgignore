@@ -1,0 +1,5 @@
+syntax: glob
+*.iml
+database-import/target/*
+*.ipr
+*.iws
