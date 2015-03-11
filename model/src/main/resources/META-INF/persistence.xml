@@ -5,7 +5,7 @@
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <property name="hibernate.show_sql" value="false"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="org.hibernate.envers.revision_on_collection_change" value="false"/>
             <property name="org.hibernate.envers.store_data_at_delete" value="false"/>
             <property name="hibernate.listeners.envers.autoRegister" value="false"/>
