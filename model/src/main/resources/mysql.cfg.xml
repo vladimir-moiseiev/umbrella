@@ -9,14 +9,6 @@
     </bean>
 
 
-    <context:property-placeholder ignore-resource-not-found="true"
-                                  ignore-unresolvable="true"
-                                  location="classpath*:umbrella-jdbc.properties,
-                    file:${user.home}/umbrella-jdbc.properties,
-                    file:${jdbc.file} "/>
-
-
-
     <!-- DataSource configuration -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="${jdbc.driver}"/>
