@@ -2,8 +2,6 @@ package com.teamdev.umbrella.app;
 
 
 import com.google.common.collect.Lists;
-import com.teamdev.umbrella.app.parsing.NameProcessor;
-import com.teamdev.umbrella.app.parsing.TrimProcessor;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.dozer.CsvDozerBeanReader;
 import org.supercsv.io.dozer.ICsvDozerBeanReader;
@@ -19,21 +17,25 @@ import static org.supercsv.prefs.CsvPreference.EXCEL_NORTH_EUROPE_PREFERENCE;
 
 public class Parser {
 
-    public static final String ENCODING = "utf8";
 
-
-    public static <T> List<T> parse(File file, CellProcessor[] processors, String[] fieldMappings,Class<T> dataType) {
+    public static <T> List<T> parse(File file, CellProcessor[] processors, String[] fieldMappings, Class<T> dataType, String encoding, long startFrom) {
         LinkedList<T> result = Lists.newLinkedList();
 
+        long count = 0;
         try {
             FileInputStream fileInputStream = new FileInputStream(file);
-            try (ICsvDozerBeanReader beanReader = new CsvDozerBeanReader(new InputStreamReader(fileInputStream, ENCODING), EXCEL_NORTH_EUROPE_PREFERENCE)) {
+            try (ICsvDozerBeanReader beanReader = new CsvDozerBeanReader(new InputStreamReader(fileInputStream, encoding), EXCEL_NORTH_EUROPE_PREFERENCE)) {
 
                 beanReader.configureBeanMapping(dataType, fieldMappings);
 
                 T row;
                 while ((row = beanReader.read(dataType, processors)) != null) {
-                    result.add(row);
+                    if(count >= startFrom - 1) {
+                        result.add(row);
+                    }
+                    else {
+                        count++;
+                    }
                 }
             }
         } catch (IOException e) {

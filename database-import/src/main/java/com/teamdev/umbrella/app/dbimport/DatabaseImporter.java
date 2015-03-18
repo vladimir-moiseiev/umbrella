@@ -2,9 +2,12 @@ package com.teamdev.umbrella.app.dbimport;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.teamdev.umbrella.app.KsRow;
+import com.teamdev.umbrella.app.TriolanRow;
 import com.teamdev.umbrella.model.internal.entity.City;
 import com.teamdev.umbrella.model.internal.entity.Person;
 import com.teamdev.umbrella.model.internal.entity.Street;
@@ -14,7 +17,8 @@ import com.teamdev.umbrella.model.internal.repository.StreetRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +34,7 @@ public class DatabaseImporter {
     @Inject
     private PersonRepository personRepository;
 
-    public void importToDatabase(List<KsRow> rows) {
+    public void importKsToDatabase(List<KsRow> rows) {
 
         final Map<City,City> citiesMap = getCityMap();
         final Map<Street,Street> streetsMap = getStreetMap();
@@ -42,17 +46,95 @@ public class DatabaseImporter {
             City city = getCity(citiesMap, row.city);
             Street street = getStreet(streetsMap,row.street);
             Person person = getPerson(personMap, row.lastName, row.firstName, row.secondName, row.phone2, "",
-                    null, null, row.building, row.apartment);
-
-//            person.setCity(city);
-//            person.setStreet(street);
+                    city, street, row.building, row.apartment);
 
         }
-        //cityRepository.save(map.keySet());
-        //streetRepository.save(streetsMap.keySet());
-
         personRepository.save(personMap.keySet());
 
+    }
+
+    public void importTriolanToDatabase(List<TriolanRow> rows) {
+
+        final Map<City,City> citiesMap = getCityMap();
+        final Map<Street,Street> streetsMap = getStreetMap();
+        final Map<Person, Person> personMap = getPersonMap();
+
+
+        for (TriolanRow row : rows) {
+
+
+            List<String> fioList = parseFio(row);
+            if(fioList.size() == 0) {
+                continue;
+            }
+            String lastName = fioList.get(0);
+            String firstName = fioList.size() > 1 ? fioList.get(1) : "";
+            String secondName = fioList.size() > 2 ?fioList.get(2) : "";
+
+
+            List<String> addressList = parseAddress(row);
+            String city = addressList.get(0);
+            String street = addressList.get(1);
+            String building = addressList.get(2);
+            String apartment = addressList.get(3);
+            List<String> phones = parsePhones(row);
+
+            City cityEntity = getCity(citiesMap, city);
+            Street streetEntity = getStreet(streetsMap,street);
+            Person person = getPerson(personMap, lastName, firstName, secondName, phones.size() > 0 ? phones.get(0) : "", "",
+                    cityEntity, streetEntity, building, apartment);
+
+            int x = 1;
+
+        }
+        personRepository.save(personMap.keySet());
+
+    }
+    private List<String> parseFio(TriolanRow row) {
+        List<String> result = Lists.newArrayListWithCapacity(3);
+
+        String fio = row.getFio();
+        String[] split = fio.split("[, \\.]");
+        if(split.length > 0) {
+            result.add(split[0]);
+        }
+        if(split.length > 1) {
+            result.add(split[1]);
+        }
+        if(split.length > 2) {
+            result.add(split[2]);
+        }
+        return result;
+    }
+
+    private List<String> parseAddress(TriolanRow row) {
+        List<String> result = Lists.newArrayListWithCapacity(4);
+
+        String address = row.getAddress();
+        String[] split = address.split("[,]");
+        String citySplit = split[0].trim();
+        result.add((citySplit.contains("г.") ? citySplit.substring(2) : citySplit).trim());
+
+        result.add(split[1].trim());
+
+        String buildingSplit = split[2].trim();
+        result.add((buildingSplit.contains("д.") ? buildingSplit.substring(2) : buildingSplit).trim());
+
+        String apartmentSplit = split[3].trim();
+        result.add((apartmentSplit.contains("кв.") ? apartmentSplit.substring(3) : apartmentSplit).trim());
+
+        return result;
+    }
+
+    private List<String> parsePhones(TriolanRow row) {
+        String phones = row.getPhones();
+        String[] split = phones.split("\\D");
+        return Lists.newArrayList(Collections2.filter(Lists.newArrayList(split), new Predicate<String>() {
+            @Override
+            public boolean apply(String input) {
+                return !input.isEmpty();
+            }
+        }));
     }
 
     private Map<Person, Person> getPersonMap() {
