@@ -1,4 +1,5 @@
 <div class="center-holder dashboard">
+    LALALA
     <div class="form-wrapper" ng-cloak>
         <form class="form-signin" name="form" ng-submit="submit()" method="POST" >
 
@@ -7,23 +8,10 @@
                 <h1 class="form-signin-heading">Sign in</h1>
             </div>
 
-            <div class="alert alert-info" ng-if="isSessionExpired"><b>Sorry</b>, session has expired, please sign in again.</div>
-
             <div class="form-group">
                 <label for="email-input">Email</label>
                 <input id="email-input" autofocus tabindex="1" type="email" class="form-control" placeholder="Email address" required ng-model="user.email" name='j_username'>
             </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <div class="pull-right link-holder">
-                    <a ng-href="https://asms.ps.membersuite.com/profile/ForgotPassword.aspx?returnurl={{url}}" class="link sub-link">Forgot password?</a>
-                </div>
-                <input id="password" tabindex="2" type="password" class="form-control" placeholder="Password" required ng-model="user.password" name='j_password'>
-            </div>
-
-
-
             <div class="form-group clearfix">
                 <!--<div class="checkbox-holder  pull-left">-->
                 <!--<input type="checkbox" value="asms-abstracts" id="remember-me">-->
@@ -57,11 +45,6 @@
             </div>
 
             <div class="separator"></div>
-
-
-            <div class="form-group text-center">
-                <p>Don&#39;t have an account? <a ng-href="https://asms.ps.membersuite.com/profile/CreateAccount_BasicInfo.aspx?returnurl={{url}}" >Sign up</a></p>
-            </div>
 
         </form>
     </div>

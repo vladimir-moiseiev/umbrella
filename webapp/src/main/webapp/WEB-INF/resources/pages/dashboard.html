@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="dashboard-front">
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
@@ -41,12 +41,22 @@
     <script src="../script/security-back.js?_version=${static.resources.version}"></script>
     <script src="../script/security-front.js?_version=${static.resources.version}"></script>
 
+    <script src="../script/login-front.js?_version=${static.resources.version}"></script>
+    <script src="../script/login-back.js?_version=${static.resources.version}"></script>
+
     <script src="../script/dashboard-front.js?_version=${static.resources.version}"></script>
 
+
 </head>
-<body ng-controller="dashboard-controller">
-<div ng-include="'header.html'"></div>
-<div class="ng-include: 'footer.html'"></div>
+<body ng-controller="security-controller">
+Umbrella
+<div class="main-wrapper">
+    <!--<div ng-include="'header.html'"></div>-->
+    <div class="clearfix content">
+        <div ng-view=""></div>
+    </div>
+</div>
+<!--<div class="ng-include: 'footer.html'"></div>-->
 
 </body>
 </html>
