@@ -6,7 +6,7 @@
 
        <import resource="classpath*:appContext.cfg.xml"/>
 
-       <context:component-scan base-package="com.teamdev.umbrella.app.parsing" />
-    <context:component-scan base-package="com.teamdev.umbrella.app.dbimport" />
+       <context:component-scan base-package="com.umbrella.app.parsing" />
+    <context:component-scan base-package="com.umbrella.app.dbimport" />
 
 </beans>
