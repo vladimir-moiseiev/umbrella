@@ -1,5 +1,6 @@
 package com.teamdev.umbrella.app.parsing;
 
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.teamdev.umbrella.app.*;
 import com.teamdev.umbrella.app.dbimport.DatabaseImporter;
@@ -46,17 +47,19 @@ public class ProviderParser {
 
     public void parse() {
         //List<KsRow> ksRows = parseKs(this.ksFolder, ParserProperties.KS_PROCESSORS, ParserProperties.KS_FIELD_MAPPINGS);
-        List<TriolanRow> triolanRows = parseTriolan(this.triolanFolder, ParserProperties.TRIOLAN_PROCESSORS, ParserProperties.TRIOLAN_FIELD_MAPPINGS);
-        //parseVolya(this.volyaFolder, ParserProperties.KS_PROCESSORS, ParserProperties.KS_FIELD_MAPPINGS);
+        //List<TriolanRow> triolanRows = parseTriolan(this.triolanFolder, ParserProperties.TRIOLAN_PROCESSORS, ParserProperties.TRIOLAN_FIELD_MAPPINGS);
+        List<VolyaRow> volyaRows = parseVolya(this.volyaFolder, ParserProperties.VOLYA_PROCESSORS, ParserProperties.VOLYA_FIELD_MAPPINGS);
+
 
         //databaseImporter.importKsToDatabase(ksRows);
-        databaseImporter.importTriolanToDatabase(triolanRows);
+        //databaseImporter.importTriolanToDatabase(triolanRows);
+        databaseImporter.importVolyaToDatabase(volyaRows);
     }
 
 
     private List<VolyaRow> parseVolya(String folderName, CellProcessor[] processors, String[] fieldMappings) {
 
-        List<VolyaRow> parseResult = Lists.newLinkedList();
+        List<VolyaRow> result = Lists.newLinkedList();
 
         File folder = new File(folderName);
         if(!folder.isDirectory()) {
@@ -65,12 +68,21 @@ public class ProviderParser {
 
         File[] files = folder.listFiles();
         if(files == null) {
-            return parseResult;
+            return result;
         }
         for (final File fileEntry : files) {
-            parseResult.addAll(Parser.parse(fileEntry, processors, fieldMappings,VolyaRow.class, volyaEncoding,volyaStartFrom));
+            final String volyaCity = Parser.parseVolyaCity(fileEntry, ParserProperties.VOLYA_CITY_PROCESSORS, ParserProperties.VOLYA_CITY_FIELD_MAPPINGS, volyaEncoding);
+            List<VolyaRow> parseResults = Parser.parse(fileEntry, processors, fieldMappings, VolyaRow.class, volyaEncoding, volyaStartFrom);
+
+            result.addAll(Lists.transform(parseResults, new Function<VolyaRow, VolyaRow>() {
+                @Override
+                public VolyaRow apply(VolyaRow input) {
+                    input.setCity(volyaCity);
+                    return input;
+                }
+            }));
         }
-        return parseResult;
+        return result;
     }
 
     private List<TriolanRow> parseTriolan(String folderName, CellProcessor[] processors, String[] fieldMappings) {

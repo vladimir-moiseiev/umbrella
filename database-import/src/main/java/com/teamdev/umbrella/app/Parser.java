@@ -46,4 +46,24 @@ public class Parser {
 
     }
 
+    public static String parseVolyaCity(File file, CellProcessor[] processors, String[] fieldMappings, String encoding) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
+            try (ICsvDozerBeanReader beanReader = new CsvDozerBeanReader(new InputStreamReader(fileInputStream, encoding), EXCEL_NORTH_EUROPE_PREFERENCE)) {
+
+                beanReader.configureBeanMapping(VolyaRow.class, fieldMappings);
+
+                VolyaRow row;
+                while ((row = beanReader.read(VolyaRow.class, processors)) != null) {
+                    return row.city;
+                }
+            }
+        } catch (IOException e) {
+            return "";
+        }
+
+        return  "";
+
+    }
+
 }

@@ -17,4 +17,10 @@ public class ParserProperties {
 
     public static final CellProcessor[] TRIOLAN_PROCESSORS = new CellProcessor[]{null,address,trim,trim,null,null,null,trim,null,null,null,null};
     public static final String[] TRIOLAN_FIELD_MAPPINGS = new String[]{null,"address","fio","phones",null,null,null,"status",null};
+
+    public static final CellProcessor[] VOLYA_PROCESSORS = new CellProcessor[]{null,null,null,trim,trim,trim,trim,null,null,null,null,null,null,null,null,trim,null,trim,null};
+    public static final String[] VOLYA_FIELD_MAPPINGS = new String[]{null,null,null,"fio","street","building","apartment",null,null,null,null,null,null,null,null,"status",null,"phones",null};
+
+    public static final CellProcessor[] VOLYA_CITY_PROCESSORS = new CellProcessor[]{null,null,null,trim,null, null, null, null, null, null, null, null, null, null, null, null, null, null, null};
+    public static final String[] VOLYA_CITY_FIELD_MAPPINGS = new String[]{null,null,null,"city",null, null, null, null, null, null, null, null, null, null, null, null, null, null, null};
 }

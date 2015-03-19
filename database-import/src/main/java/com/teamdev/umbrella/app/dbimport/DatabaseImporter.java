@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.teamdev.umbrella.app.KsRow;
 import com.teamdev.umbrella.app.TriolanRow;
+import com.teamdev.umbrella.app.VolyaRow;
 import com.teamdev.umbrella.model.internal.entity.City;
 import com.teamdev.umbrella.model.internal.entity.Person;
 import com.teamdev.umbrella.model.internal.entity.Street;
@@ -17,8 +18,6 @@ import com.teamdev.umbrella.model.internal.repository.StreetRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -90,7 +89,60 @@ public class DatabaseImporter {
         personRepository.save(personMap.keySet());
 
     }
+
+    public void importVolyaToDatabase(List<VolyaRow> rows) {
+
+        final Map<City,City> citiesMap = getCityMap();
+        final Map<Street,Street> streetsMap = getStreetMap();
+        final Map<Person, Person> personMap = getPersonMap();
+
+
+        for (VolyaRow row : rows) {
+
+
+            List<String> fioList = parseFio(row);
+            if(fioList.size() == 0) {
+                continue;
+            }
+            String lastName = fioList.get(0);
+            String firstName = fioList.size() > 1 ? fioList.get(1) : "";
+            String secondName = fioList.size() > 2 ?fioList.get(2) : "";
+
+
+            String city = row.getCity();
+            String street = row.getStreet();
+            String building = row.getBuilding();
+            String apartment = row.getApartment();
+            List<String> phones = parsePhones(row);
+
+            City cityEntity = getCity(citiesMap, city);
+            Street streetEntity = getStreet(streetsMap,street);
+            Person person = getPerson(personMap, lastName, firstName, secondName, phones.size() > 0 ? phones.get(0) : "", "",
+                    cityEntity, streetEntity, building, apartment);
+
+        }
+
+        personRepository.save(personMap.keySet());
+
+    }
     private List<String> parseFio(TriolanRow row) {
+        List<String> result = Lists.newArrayListWithCapacity(3);
+
+        String fio = row.getFio();
+        String[] split = fio.split("[, \\.]");
+        if(split.length > 0) {
+            result.add(split[0]);
+        }
+        if(split.length > 1) {
+            result.add(split[1]);
+        }
+        if(split.length > 2) {
+            result.add(split[2]);
+        }
+        return result;
+    }
+
+    private List<String> parseFio(VolyaRow row) {
         List<String> result = Lists.newArrayListWithCapacity(3);
 
         String fio = row.getFio();
@@ -127,6 +179,17 @@ public class DatabaseImporter {
     }
 
     private List<String> parsePhones(TriolanRow row) {
+        String phones = row.getPhones();
+        String[] split = phones.split("\\D");
+        return Lists.newArrayList(Collections2.filter(Lists.newArrayList(split), new Predicate<String>() {
+            @Override
+            public boolean apply(String input) {
+                return !input.isEmpty();
+            }
+        }));
+    }
+
+    private List<String> parsePhones(VolyaRow row) {
         String phones = row.getPhones();
         String[] split = phones.split("\\D");
         return Lists.newArrayList(Collections2.filter(Lists.newArrayList(split), new Predicate<String>() {
