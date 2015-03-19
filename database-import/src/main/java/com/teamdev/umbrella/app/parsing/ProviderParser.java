@@ -2,10 +2,14 @@ package com.teamdev.umbrella.app.parsing;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.teamdev.umbrella.app.*;
+import com.teamdev.umbrella.app.KsRow;
+import com.teamdev.umbrella.app.Parser;
+import com.teamdev.umbrella.app.TriolanRow;
+import com.teamdev.umbrella.app.VolyaRow;
 import com.teamdev.umbrella.app.dbimport.DatabaseImporter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
 import javax.inject.Inject;
@@ -14,10 +18,6 @@ import java.util.List;
 
 @Component
 public class ProviderParser {
-
-    public static final String KS_ENCODING = "utf8";
-    public static final String TRIOLAN_ENCODING = "cp866";
-
     @Inject
     DatabaseImporter databaseImporter;
 
@@ -45,15 +45,18 @@ public class ProviderParser {
     public ProviderParser() {
     }
 
+    @Transactional
     public void parse() {
-        //List<KsRow> ksRows = parseKs(this.ksFolder, ParserProperties.KS_PROCESSORS, ParserProperties.KS_FIELD_MAPPINGS);
-        //List<TriolanRow> triolanRows = parseTriolan(this.triolanFolder, ParserProperties.TRIOLAN_PROCESSORS, ParserProperties.TRIOLAN_FIELD_MAPPINGS);
+        List<KsRow> ksRows = parseKs(this.ksFolder, ParserProperties.KS_PROCESSORS, ParserProperties.KS_FIELD_MAPPINGS);
+        List<TriolanRow> triolanRows = parseTriolan(this.triolanFolder, ParserProperties.TRIOLAN_PROCESSORS, ParserProperties.TRIOLAN_FIELD_MAPPINGS);
         List<VolyaRow> volyaRows = parseVolya(this.volyaFolder, ParserProperties.VOLYA_PROCESSORS, ParserProperties.VOLYA_FIELD_MAPPINGS);
 
 
-        //databaseImporter.importKsToDatabase(ksRows);
-        //databaseImporter.importTriolanToDatabase(triolanRows);
+        databaseImporter.initFromDb();
+        databaseImporter.importKsToDatabase(ksRows);
+        databaseImporter.importTriolanToDatabase(triolanRows);
         databaseImporter.importVolyaToDatabase(volyaRows);
+        int x = 1;
     }
 
 

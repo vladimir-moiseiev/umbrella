@@ -9,20 +9,22 @@ import com.google.common.collect.Maps;
 import com.teamdev.umbrella.app.KsRow;
 import com.teamdev.umbrella.app.TriolanRow;
 import com.teamdev.umbrella.app.VolyaRow;
-import com.teamdev.umbrella.model.internal.entity.City;
-import com.teamdev.umbrella.model.internal.entity.Person;
-import com.teamdev.umbrella.model.internal.entity.Street;
-import com.teamdev.umbrella.model.internal.repository.CityRepository;
-import com.teamdev.umbrella.model.internal.repository.PersonRepository;
-import com.teamdev.umbrella.model.internal.repository.StreetRepository;
+import com.teamdev.umbrella.model.internal.entity.*;
+import com.teamdev.umbrella.model.internal.repository.*;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
 
+//todo: phones list in entity
+
 @Service
 public class DatabaseImporter {
+
+    public static final long KYIVSTAR_ID = 3L;
+    public static final long TRIOLAN_ID = 1L;
+    public static final long VOLYA_ID = 2L;
 
     @Inject
     private CityRepository cityRepository;
@@ -33,12 +35,30 @@ public class DatabaseImporter {
     @Inject
     private PersonRepository personRepository;
 
+    @Inject
+    private ProviderRepository providerRepository;
+
+    @Inject
+    private ConnectionInfoRepository connectionInfoRepository;
+
+    private Map<City, City> citiesMap;
+    private Map<Street, Street> streetsMap;
+    private Map<Person, Person> personMap;
+    private Map<ConnectionInfo, ConnectionInfo> connectionMap;
+
+    public DatabaseImporter() {
+
+    }
+
+    public void initFromDb() {
+        citiesMap = getCityMap();
+        streetsMap = getStreetMap();
+        personMap = getPersonMap();
+        connectionMap = getConnectionMap();
+    }
+
     public void importKsToDatabase(List<KsRow> rows) {
-
-        final Map<City,City> citiesMap = getCityMap();
-        final Map<Street,Street> streetsMap = getStreetMap();
-        final Map<Person, Person> personMap = getPersonMap();
-
+        Provider kyivstar = providerRepository.findOne(KYIVSTAR_ID);
 
         for (KsRow row : rows) {
 
@@ -47,18 +67,15 @@ public class DatabaseImporter {
             Person person = getPerson(personMap, row.lastName, row.firstName, row.secondName, row.phone2, "",
                     city, street, row.building, row.apartment);
 
-        }
-        personRepository.save(personMap.keySet());
 
+            ConnectionInfo connectionInfo = getConnection(connectionMap,person,kyivstar);
+        }
+        //personRepository.save(personMap.keySet());
+        connectionInfoRepository.save(connectionMap.keySet());
     }
 
     public void importTriolanToDatabase(List<TriolanRow> rows) {
-
-        final Map<City,City> citiesMap = getCityMap();
-        final Map<Street,Street> streetsMap = getStreetMap();
-        final Map<Person, Person> personMap = getPersonMap();
-
-
+        Provider triolan = providerRepository.findOne(TRIOLAN_ID);
         for (TriolanRow row : rows) {
 
 
@@ -83,20 +100,15 @@ public class DatabaseImporter {
             Person person = getPerson(personMap, lastName, firstName, secondName, phones.size() > 0 ? phones.get(0) : "", "",
                     cityEntity, streetEntity, building, apartment);
 
-            int x = 1;
-
+            ConnectionInfo connectionInfo = getConnection(connectionMap,person,triolan);
         }
-        personRepository.save(personMap.keySet());
+        //personRepository.save(personMap.keySet());
+        connectionInfoRepository.save(connectionMap.keySet());
 
     }
 
     public void importVolyaToDatabase(List<VolyaRow> rows) {
-
-        final Map<City,City> citiesMap = getCityMap();
-        final Map<Street,Street> streetsMap = getStreetMap();
-        final Map<Person, Person> personMap = getPersonMap();
-
-
+        Provider volya = providerRepository.findOne(VOLYA_ID);
         for (VolyaRow row : rows) {
 
 
@@ -120,11 +132,15 @@ public class DatabaseImporter {
             Person person = getPerson(personMap, lastName, firstName, secondName, phones.size() > 0 ? phones.get(0) : "", "",
                     cityEntity, streetEntity, building, apartment);
 
+            ConnectionInfo connectionInfo = getConnection(connectionMap,person,volya);
+
         }
 
-        personRepository.save(personMap.keySet());
+        //personRepository.save(personMap.keySet());
+        connectionInfoRepository.save(connectionMap.keySet());
 
     }
+
     private List<String> parseFio(TriolanRow row) {
         List<String> result = Lists.newArrayListWithCapacity(3);
 
@@ -158,7 +174,6 @@ public class DatabaseImporter {
         }
         return result;
     }
-
     private List<String> parseAddress(TriolanRow row) {
         List<String> result = Lists.newArrayListWithCapacity(4);
 
@@ -200,9 +215,18 @@ public class DatabaseImporter {
         }));
     }
 
+    private Map<ConnectionInfo,ConnectionInfo> getConnectionMap() {
+        Iterable<ConnectionInfo> all = connectionInfoRepository.findAll();
+        return Maps.newHashMap(Maps.uniqueIndex(all, new Function<ConnectionInfo, ConnectionInfo>() {
+            @Override
+            public ConnectionInfo apply(ConnectionInfo input) {
+                return input;
+            }
+        }));
+    }
+
     private Map<Person, Person> getPersonMap() {
         Iterable<Person> all = personRepository.findAll();
-        int size = Lists.newArrayList(all).size();
         return Maps.newHashMap(Maps.uniqueIndex(all, new Function<Person, Person>() {
             @Override
             public Person apply(Person input) {
@@ -227,6 +251,19 @@ public class DatabaseImporter {
                 return input;
             }
         }));
+    }
+
+    private ConnectionInfo getConnection(Map<ConnectionInfo, ConnectionInfo> map, Person person, Provider kyivstar) {
+        ConnectionInfo connectionInfo = new ConnectionInfo();
+        connectionInfo.setProvider(kyivstar);
+        connectionInfo.setPerson(person);
+
+        ConnectionInfo connectionInfoFromMap = map.get(connectionInfo);
+        if(connectionInfoFromMap == null) {
+            map.put(connectionInfo,connectionInfo);
+            return connectionInfo;
+        }
+        return connectionInfoFromMap;
     }
 
     private Person getPerson(final Map<Person, Person> map, String lastName, String firstName, String secondName, String phone,
