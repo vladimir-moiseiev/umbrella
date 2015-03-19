@@ -1,0 +1,68 @@
+<div class="center-holder dashboard">
+    <div class="form-wrapper" ng-cloak>
+        <form class="form-signin" name="form" ng-submit="submit()" method="POST" >
+
+            <div class="header-holder text-center">
+                <i class="icon logo"></i>
+                <h1 class="form-signin-heading">Sign in</h1>
+            </div>
+
+            <div class="alert alert-info" ng-if="isSessionExpired"><b>Sorry</b>, session has expired, please sign in again.</div>
+
+            <div class="form-group">
+                <label for="email-input">Email</label>
+                <input id="email-input" autofocus tabindex="1" type="email" class="form-control" placeholder="Email address" required ng-model="user.email" name='j_username'>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="pull-right link-holder">
+                    <a ng-href="https://asms.ps.membersuite.com/profile/ForgotPassword.aspx?returnurl={{url}}" class="link sub-link">Forgot password?</a>
+                </div>
+                <input id="password" tabindex="2" type="password" class="form-control" placeholder="Password" required ng-model="user.password" name='j_password'>
+            </div>
+
+
+
+            <div class="form-group clearfix">
+                <!--<div class="checkbox-holder  pull-left">-->
+                <!--<input type="checkbox" value="asms-abstracts" id="remember-me">-->
+                <!--<label for="remember-me">Remember me</label>-->
+                <!--</div>-->
+            </div>
+
+            <div class="message message-error" ng-if="isError">The email or password you entered is incorrect</div>
+
+            <div class="btn-holder">
+
+                <button id="sign-in-button"
+                        ng-disabled="isLogInButtonDisabled"
+                        tabindex="3"
+                        class="btn btn-sign-in"
+                        type="submit">
+
+                    <span ng-if="!showLogInSpinner">Log in</span>
+
+                    <div ng-if="showLogInSpinner" id="circularG">
+                        <div id="circularG_1" class="circularG"></div>
+                        <div id="circularG_2" class="circularG"></div>
+                        <div id="circularG_3" class="circularG"></div>
+                        <div id="circularG_4" class="circularG"></div>
+                        <div id="circularG_5" class="circularG"></div>
+                        <div id="circularG_6" class="circularG"></div>
+                        <div id="circularG_7" class="circularG"></div>
+                        <div id="circularG_8" class="circularG"></div>
+                    </div>
+                </button>
+            </div>
+
+            <div class="separator"></div>
+
+
+            <div class="form-group text-center">
+                <p>Don&#39;t have an account? <a ng-href="https://asms.ps.membersuite.com/profile/CreateAccount_BasicInfo.aspx?returnurl={{url}}" >Sign up</a></p>
+            </div>
+
+        </form>
+    </div>
+</div>
