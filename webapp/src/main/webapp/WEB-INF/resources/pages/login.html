@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html ng-app="dashboard-front">
-<head lang="en">
+<html>
+<head lang="en" ng-app="login-front">
     <meta charset="UTF-8">
     <title></title>
 
@@ -43,23 +43,20 @@
 
     <script src="../script/login-front.js?_version=${static.resources.version}"></script>
     <script src="../script/login-back.js?_version=${static.resources.version}"></script>
-
-    <script src="../script/search-back.js?_version=${static.resources.version}"></script>
-
-    <script src="../script/dashboard-front.js?_version=${static.resources.version}"></script>
-
-
 </head>
-<body ng-controller="dashboard-controller">
-<div class="main-wrapper">
-    <!--<div ng-include="'header.html'"></div>-->
-    <div class="ng-include: '../pages/dashboard/search.html'"></div>
-    <div class="ng-include: '../pages/dashboard/user-dashboard.html'"></div>
-    <!--<div class="clearfix content">-->
-        <!--<div ng-view=""></div>-->
-    <!--</div>-->
-</div>
-<!--<div class="ng-include: 'footer.html'"></div>-->
+<body>
+<div ng-controller="login-controller">
+    <div>
+        <form class="form-signin" name="form" method="POST" action="../perform_login" >
+            Username:<br>
+            <input type="text" name="j_username" value=""/><br><br>
+            Password:<br>
+            <input type="password" name="j_password" value=""/>
 
+            <input value="Login" name="submit" type="submit"/>
+
+        </form>
+    </div>
+</div>
 </body>
 </html>

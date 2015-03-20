@@ -3,6 +3,7 @@ package com.umbrella.model.internal;
 import com.google.common.collect.Lists;
 import com.umbrella.model.internal.entity.Provider;
 import com.umbrella.model.internal.repository.ProviderRepository;
+import com.umbrella.model.internal.repository.UserRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
@@ -10,16 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import javax.inject.Inject;
-
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 @Component
 @Transactional
-public class ProviderCreator {
+public class DataCreator {
 
     @Inject
     private ProviderRepository providerRepository;
+
+    @Inject
+    private UserRepository userRepository;
 
     @Inject
     private PlatformTransactionManager transactionManager;
@@ -35,6 +38,8 @@ public class ProviderCreator {
                     providerRepository.save(new Provider("Воля"));
                     providerRepository.save(new Provider("Киевстар"));
                 }
+
+
             }
         });
 

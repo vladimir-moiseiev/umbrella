@@ -22,7 +22,7 @@
 
 
     <mvc:view-controller path="/" view-name="redirect:pages/dashboard.html"/>
-    <mvc:view-controller path="/error/404.html" view-name="redirect:pages/404.html"/>
+    <mvc:view-controller path="/error/404.html" view-name="redirect:/"/>
     <mvc:view-controller path="/error/403.html" view-name="redirect:/"/>
     <mvc:view-controller path="/pages" view-name="redirect:/"/>
     <mvc:view-controller path="/pages/" view-name="redirect:/"/>

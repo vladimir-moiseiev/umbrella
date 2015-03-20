@@ -10,10 +10,12 @@ import javax.inject.Inject;
 public class UserProvider {
     public class UserDetails {
         public final String username;
+        public final String password;
         public final boolean isAdmin;
 
-        public UserDetails(String username, boolean isAdmin) {
+        public UserDetails(String username, String password, boolean isAdmin) {
             this.username = username;
+            this.password = password;
             this.isAdmin = isAdmin;
         }
     }
@@ -21,11 +23,17 @@ public class UserProvider {
     @Inject
     private UserRepository userRepository;
 
-    UserDetails getUserDetailsByEmail(String email) {
+    public void createUser(String username, String password, boolean isAdmin) {
+        if(userRepository.findByUsername(username) == null) {
+            userRepository.save(new User(username, password, isAdmin));
+        }
+    }
+
+    public UserDetails getUserDetailsByEmail(String email) {
         final User byUsername = userRepository.findByUsername(email);
         if (byUsername == null) {
             return null;
         }
-        return new UserDetails(byUsername.getUsername(),byUsername.isAdmin());
+        return new UserDetails(byUsername.getUsername(),byUsername.getPassword(),byUsername.isAdmin());
     }
 }

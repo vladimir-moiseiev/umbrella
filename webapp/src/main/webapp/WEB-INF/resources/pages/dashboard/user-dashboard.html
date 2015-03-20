@@ -1,0 +1,22 @@
+<div class="center-holder dashboard">
+    <table>
+        <thead>
+            <tr>
+                <th>ФИО</th>
+                <th>Телефон</th>
+                <th>ИНН</th>
+                <th>Адрес</th>
+                <th>Провайдер</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="person in persons">
+                <td>{{person.lastName}} {{person.firstName}} {{person.secondName}}</td>
+                <td>{{person.phone}}</td>
+                <td>{{person.identificationNumber}}</td>
+                <td>{{person.city}}, {{person.street}} {{person.building}}, {{person.apartment}}</td>
+                <td>{{person.provider}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

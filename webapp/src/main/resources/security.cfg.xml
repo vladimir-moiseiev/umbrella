@@ -17,12 +17,13 @@
     <http pattern="/common-js/**" security="none" />
 
     <http use-expressions="true" >
-        <intercept-url pattern="/pages/dashboard.html" access="permitAll" />
+        <intercept-url pattern="/pages/login.html" access="permitAll" />
+        <intercept-url pattern="/pages/dashboard.html" access="isAuthenticated()" />
         <intercept-url pattern="/perform_login" method="POST" access="permitAll" />
         <intercept-url pattern="/**" access="isAuthenticated()" />
 
 
-        <form-login login-page="/pages/dashboard.html#/login"
+        <form-login login-page="/pages/login.html"
                     login-processing-url="/perform_login"
                     default-target-url="/pages/dashboard.html"/>
 
