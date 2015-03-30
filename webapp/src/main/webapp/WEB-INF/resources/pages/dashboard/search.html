@@ -1,5 +1,30 @@
-<div>
-    <input type="text" name="name" ng-model="person.name">
-    <button ng-click="search()">Искать</button>
+<div class="well clearfix">
+    <form class="form-inline">
+        <div class="form-group">
+            <label>Имя</label>
+            <input class="form-control" type="text" name="name" ng-model="person.name">
+        </div>
+        <div class="form-group">
+            <label>Город</label>
+            <select class="form-control" ng-model="selectedCity.name">
+                <option ng-repeat="city in cities"
+                        value="{{city.city}}" ng-selected="selectedCity.name==city"> {{city.city}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Провайдер</label>
+            <select class="form-control" ng-model="selectedProvider.name">
+                <option ng-repeat="provider in providers"
+                        value="{{provider.provider}}" ng-selected="selectedProvider.name==provider"> {{provider.provider}}
+                </option>
+            </select>
+        </div>
+        <div class="clearfix" style="margin-top: 30px;">
+            <button class="btn btn-primary pull-right" ng-click="search()">Искать</button>
+        </div>
+
+    </form>
+
 </div>
 

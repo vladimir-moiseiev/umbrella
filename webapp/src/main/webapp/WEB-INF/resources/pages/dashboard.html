@@ -38,6 +38,8 @@
     <link rel="stylesheet" href="../lib/bootstrap-validator/bootstrapValidator.css">
     <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap-switch.css">
 
+    <link rel="stylesheet" href="css/styles.css"/>
+
     <script src="../script/security-back.js?_version=${static.resources.version}"></script>
     <script src="../script/security-front.js?_version=${static.resources.version}"></script>
 
@@ -46,15 +48,26 @@
 
     <script src="../script/search-back.js?_version=${static.resources.version}"></script>
 
+    <script src="../script/dictionary-back.js?_version=${static.resources.version}"></script>
     <script src="../script/dashboard-front.js?_version=${static.resources.version}"></script>
 
 
 </head>
 <body ng-controller="dashboard-controller">
-<div class="main-wrapper">
-    <!--<div ng-include="'header.html'"></div>-->
-    <div class="ng-include: '../pages/dashboard/search.html'"></div>
-    <div class="ng-include: '../pages/dashboard/user-dashboard.html'"></div>
+<div class="main-wrapper container">
+    <div class="row">
+        <div class="col-lg-12">
+            <!--<div ng-include="'header.html'"></div>-->
+            <div class="ng-include: '../pages/dashboard/search.html'"></div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="ng-include: '../pages/dashboard/user-dashboard.html'"></div>
+        </div>
+
+    </div>
+
+
     <!--<div class="clearfix content">-->
         <!--<div ng-view=""></div>-->
     <!--</div>-->

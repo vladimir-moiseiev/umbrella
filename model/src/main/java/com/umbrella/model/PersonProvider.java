@@ -20,14 +20,23 @@ public class PersonProvider {
 
     public List<PersonDTO> findPersons(String name) {
         List<ConnectionInfo> byPerson_lastName = connectionInfoRepository.findByPerson_LastName(name);
-        return Lists.newArrayList(Lists.transform(byPerson_lastName, new Function<ConnectionInfo, PersonDTO>() {
+        return Lists.newArrayList(getPersons(byPerson_lastName));
+    }
+
+    public List<PersonDTO> findPersons(String name, String provider, String city) {
+        List<ConnectionInfo> byPerson_lastName = connectionInfoRepository.findByProvider_ProviderAndPerson_City_CityAndPerson_LastName(provider,city,name);
+        return Lists.newArrayList(getPersons(byPerson_lastName));
+    }
+
+    private List<PersonDTO> getPersons(List<ConnectionInfo> byPerson_lastName) {
+        return Lists.transform(byPerson_lastName, new Function<ConnectionInfo, PersonDTO>() {
             @Override
             public PersonDTO apply(ConnectionInfo input) {
                 Person person = input.getPerson();
                 Provider provider = input.getProvider();
-                return new PersonDTO(person.getLastName(),person.getFirstName(),person.getSecondName(),person.getPhone(),person.getIdentificationNumber(),
-                        person.getCity().getCity(),person.getStreet().getStreet(),person.getBuilding(),person.getApartment(), provider.getProvider());
+                return new PersonDTO(person.getLastName(), person.getFirstName(), person.getSecondName(), person.getPhone(), person.getIdentificationNumber(),
+                        person.getCity().getCity(), person.getStreet().getStreet(), person.getBuilding(), person.getApartment(), provider.getProvider());
             }
-        }));
+        });
     }
 }

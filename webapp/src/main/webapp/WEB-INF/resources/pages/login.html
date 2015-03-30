@@ -38,6 +38,8 @@
     <link rel="stylesheet" href="../lib/bootstrap-validator/bootstrapValidator.css">
     <link rel="stylesheet" href="../lib/bootstrap/css/bootstrap-switch.css">
 
+    <link rel="stylesheet" href="css/styles.css"/>
+
     <script src="../script/security-back.js?_version=${static.resources.version}"></script>
     <script src="../script/security-front.js?_version=${static.resources.version}"></script>
 
@@ -46,17 +48,21 @@
 </head>
 <body>
 <div ng-controller="login-controller">
-    <div>
+    <div class="container">
         <form class="form-signin" name="form" method="POST" action="../perform_login" >
-            Username:<br>
-            <input type="text" name="j_username" value=""/><br><br>
-            Password:<br>
-            <input type="password" name="j_password" value=""/>
+            <h2 class="form-signin-heading">Please sign in</h2>
 
-            <input value="Login" name="submit" type="submit"/>
+            <label class="sr-only">Username:</label>
+            <input class="form-control" type="text" name="j_username" value=""/>
 
+            <label class="sr-only"> Password:</label>
+            <input class="form-control" type="password" name="j_password" value=""/>
+
+            <input class="btn btn-lg btn-primary btn-block" value="Login" name="submit" type="submit"/>
         </form>
     </div>
+
+
 </div>
 </body>
 </html>

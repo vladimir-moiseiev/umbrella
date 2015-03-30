@@ -1,0 +1,10 @@
+.main-wrapper{
+    width: 811px;
+    margin: 50px auto;
+}
+
+.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
