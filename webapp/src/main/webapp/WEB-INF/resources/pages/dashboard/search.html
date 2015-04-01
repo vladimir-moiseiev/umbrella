@@ -1,7 +1,7 @@
 <div class="well clearfix">
     <form class="form-inline">
         <div class="form-group">
-            <label>Имя</label>
+            <label>ФИО</label>
             <input class="form-control" type="text" name="name" ng-model="person.name">
         </div>
         <div class="form-group">
@@ -12,16 +12,20 @@
                 </option>
             </select>
         </div>
-        <div class="form-group">
-            <label>Провайдер</label>
-            <select class="form-control" ng-model="selectedProvider.name">
-                <option ng-repeat="provider in providers"
-                        value="{{provider.provider}}" ng-selected="selectedProvider.name==provider"> {{provider.provider}}
-                </option>
-            </select>
+        <div class="checkbox">
+            <label>Провайдеры
+            <input type="checkbox" ng-model="selectedProvider.triolan">Триолан<br>
+            <input type="checkbox" ng-model="selectedProvider.volya">Воля<br>
+            <input type="checkbox" ng-model="selectedProvider.ks">Киевстар<br>
+            </label>
+            <!--<select class="form-control" ng-model="selectedProvider.name">-->
+                <!--<option ng-repeat="provider in providers"-->
+                        <!--value="{{provider.provider}}" ng-selected="selectedProvider.name==provider"> {{provider.provider}}-->
+                <!--</option>-->
+            <!--</select>-->
         </div>
         <div class="clearfix" style="margin-top: 30px;">
-            <button class="btn btn-primary pull-right" ng-click="search()">Искать</button>
+            <button class="btn btn-primary pull-right" ng-click="search()"   ng-disabled="!validateSearch()">Искать</button>
         </div>
 
     </form>

@@ -27,6 +27,9 @@ angular.module("dashboard-front", [
 
             $scope.selectedCity = {};
             $scope.selectedProvider = {};
+            $scope.selectedProvider.triolan = false;
+            $scope.selectedProvider.ks = false;
+            $scope.selectedProvider.volya = false;
 
             Dictionary.getCities(function(response){
                 console.log("getCities response", response);
@@ -41,7 +44,9 @@ angular.module("dashboard-front", [
             $scope.search = function(){
                 var request = {
                     lastName : $scope.person.name,
-                    provider : $scope.selectedProvider.name,
+                    triolan : $scope.selectedProvider.triolan,
+                    ks : $scope.selectedProvider.ks,
+                    volya : $scope.selectedProvider.volya,
                     city : $scope.selectedCity.name
                 };
 
@@ -50,6 +55,14 @@ angular.module("dashboard-front", [
                     console.log("find persons response", response);
                     $scope.persons = response.result;
                 });
+            };
+
+            $scope.validateSearch = function() {
+                if($scope.person.name == null || $scope.person.name === "" ||
+                    $scope.selectedCity.name == null || $scope.selectedCity.name === "" ) {
+                    return false;
+                }
+                return true;
             }
         }
     ]);

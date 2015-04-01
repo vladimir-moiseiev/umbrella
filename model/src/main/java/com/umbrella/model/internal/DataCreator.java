@@ -18,6 +18,9 @@ import javax.inject.Inject;
 @Transactional
 public class DataCreator {
 
+    public static final String TRIOLAN = "Триолан";
+    public static final String VOLYA = "Воля";
+    public static final String KYIVSTAR = "Киевстар";
     @Inject
     private ProviderRepository providerRepository;
 
@@ -34,9 +37,9 @@ public class DataCreator {
             @Override
             protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
                 if (Lists.newArrayList(providerRepository.findAll()).size() == 0) {
-                    providerRepository.save(new Provider("Триолан"));
-                    providerRepository.save(new Provider("Воля"));
-                    providerRepository.save(new Provider("Киевстар"));
+                    providerRepository.save(new Provider(TRIOLAN));
+                    providerRepository.save(new Provider(VOLYA));
+                    providerRepository.save(new Provider(KYIVSTAR));
                 }
 
 

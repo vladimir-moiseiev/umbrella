@@ -3,6 +3,7 @@ package com.umbrella.model;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.umbrella.model.dto.PersonDTO;
+import com.umbrella.model.internal.DataCreator;
 import com.umbrella.model.internal.entity.ConnectionInfo;
 import com.umbrella.model.internal.entity.Person;
 import com.umbrella.model.internal.entity.Provider;
@@ -26,6 +27,20 @@ public class PersonProvider {
     public List<PersonDTO> findPersons(String name, String provider, String city) {
         List<ConnectionInfo> byPerson_lastName = connectionInfoRepository.findByProvider_ProviderAndPerson_City_CityAndPerson_LastName(provider,city,name);
         return Lists.newArrayList(getPersons(byPerson_lastName));
+    }
+
+    public List<PersonDTO> findPersons(String name, String city, boolean triolan, boolean ks, boolean volya) {
+        List<ConnectionInfo> result = Lists.newLinkedList();
+        if(ks) {
+            result.addAll(connectionInfoRepository.findByProvider_ProviderAndPerson_City_CityAndPerson_LastName(DataCreator.KYIVSTAR, city, name));
+        }
+        if(triolan) {
+            result.addAll(connectionInfoRepository.findByProvider_ProviderAndPerson_City_CityAndPerson_LastName(DataCreator.TRIOLAN, city, name));
+        }
+        if(volya) {
+            result.addAll(connectionInfoRepository.findByProvider_ProviderAndPerson_City_CityAndPerson_LastName(DataCreator.VOLYA, city, name));
+        }
+        return Lists.newArrayList(getPersons(result));
     }
 
     private List<PersonDTO> getPersons(List<ConnectionInfo> byPerson_lastName) {

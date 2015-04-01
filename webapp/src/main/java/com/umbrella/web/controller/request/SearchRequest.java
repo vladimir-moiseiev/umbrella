@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SearchRequest {
     private String lastName;
-    private String provider;
+    private boolean triolan;
+    private boolean ks;
+    private boolean volya;
     private String city;
 
     public SearchRequest() {
@@ -20,12 +22,28 @@ public class SearchRequest {
         this.lastName = lastName;
     }
 
-    public String getProvider() {
-        return provider;
+    public boolean isTriolan() {
+        return triolan;
     }
 
-    public void setProvider(String provider) {
-        this.provider = provider;
+    public void setTriolan(boolean triolan) {
+        this.triolan = triolan;
+    }
+
+    public boolean isKs() {
+        return ks;
+    }
+
+    public void setKs(boolean ks) {
+        this.ks = ks;
+    }
+
+    public boolean isVolya() {
+        return volya;
+    }
+
+    public void setVolya(boolean volya) {
+        this.volya = volya;
     }
 
     public String getCity() {

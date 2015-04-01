@@ -23,12 +23,12 @@ public class SearchController {
     @RequestMapping(value = "/findPersons", method = RequestMethod.POST)
     @ResponseBody
     public SimpleResponse findPersons(@RequestBody SearchRequest request,Principal principal ) {
-        if(request.getCity().isEmpty() && request.getProvider().isEmpty()) {
+        if(request.getCity().isEmpty() && request.isKs() && request.isTriolan() && request.isVolya()) {
             List<PersonDTO> persons = personProvider.findPersons(request.getLastName());
             return SimpleResponse.create(persons);
         }
         else {
-            List<PersonDTO> persons = personProvider.findPersons(request.getLastName(),request.getProvider(), request.getCity());
+            List<PersonDTO> persons = personProvider.findPersons(request.getLastName(),request.getCity(), request.isTriolan(), request.isKs(), request.isVolya());
             return SimpleResponse.create(persons);
         }
     }
