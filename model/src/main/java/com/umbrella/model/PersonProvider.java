@@ -11,16 +11,17 @@ import com.umbrella.model.internal.entity.*;
 import com.umbrella.model.internal.repository.ConnectionInfoRepository;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Set;
 
 @Service
-//@Transactional(readOnly = true)
+@Transactional(readOnly = true)
 public class PersonProvider {
 
-    private Logger LOG = Logger.getLogger(PersonProvider.class);
+    private static Logger LOG = Logger.getLogger(PersonProvider.class);
 
     @Inject
     private ConnectionInfoRepository connectionInfoRepository;

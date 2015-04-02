@@ -13,12 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-
 import java.util.Collection;
 import java.util.List;
 
 @Service
-//@Transactional(readOnly = true)
+@Transactional(readOnly = true)
 public class DictionaryProvider {
     @Inject
     private ProviderRepository providerRepository;

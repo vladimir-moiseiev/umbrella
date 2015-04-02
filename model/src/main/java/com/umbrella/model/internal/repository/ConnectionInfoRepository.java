@@ -15,7 +15,7 @@ public interface ConnectionInfoRepository extends CrudRepository<ConnectionInfo,
     List<ConnectionInfo> findByProvider_ProviderAndPerson_City_CityAndPerson_LastName(String provider, String city, String lastName);
 
     @Query("select c from ConnectionInfo as c " +
-            "where (c.person.firstName like CONCAT('%',:name,'%') or c.person.secondName like CONCAT('%',:name,'%') or c.person.lastName like CONCAT('%',:name,'%')) and " +
+            "where (c.person.firstName like CONCAT('%',:name,'%') or c.person.lastName like CONCAT('%',:name,'%')) and " +
             "c.provider.provider = :provider and c.person.city.city = :city")
     List<ConnectionInfo> findPerson(@Param("provider") String provider, @Param("city") String city, @Param("name") String name);
 }

@@ -4,8 +4,6 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-       <import resource="persistence.cfg.xml"/>
-       <import resource="mysql.cfg.xml"/>
 
        <context:component-scan base-package="com.umbrella.model" />
 
@@ -13,5 +11,7 @@
                                      ignore-unresolvable="true"
                                      location="classpath*:umbrella.properties,
                     file:${user.home}/umbrella.properties"/>
+
+        <import resource="classpath*:persistence.cfg.xml"/>
 
 </beans>

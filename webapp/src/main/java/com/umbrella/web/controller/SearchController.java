@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/search")
 public class SearchController {
 
-    private Logger LOG = Logger.getLogger(SearchController.class);
+    private static Logger LOG = Logger.getLogger(SearchController.class);
     @Inject
     private PersonProvider personProvider;
 
