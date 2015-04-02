@@ -1,9 +1,12 @@
 package com.umbrella.web.security;
 
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import java.security.Principal;
 import java.util.Collection;
 
 public class ExtendedUser extends User {
@@ -25,5 +28,14 @@ public class ExtendedUser extends User {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public static long getUserId(Principal principal) {
+        return get(principal).getUserId();
+    }
+
+    public static ExtendedUser get(Principal principal) {
+        if(principal == null) throw new AccessDeniedException("User is unauthorized");
+        return (ExtendedUser) ((Authentication) principal).getPrincipal();
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 public class PersonDTO {
+    private long id;
     private String lastName;
     private String firstName;
     private String secondName;
@@ -24,7 +25,8 @@ public class PersonDTO {
     public PersonDTO() {
     }
 
-    public PersonDTO(String lastName, String firstName, String secondName, Set<String> phones, String identificationNumber, String city, String street, String building, String apartment, String provider, List<CommentDTO> comments) {
+    public PersonDTO(long id, String lastName, String firstName, String secondName, Set<String> phones, String identificationNumber, String city, String street, String building, String apartment, String provider, List<CommentDTO> comments) {
+        this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -36,6 +38,14 @@ public class PersonDTO {
         this.apartment = apartment;
         this.provider = provider;
         this.comments = comments;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getLastName() {

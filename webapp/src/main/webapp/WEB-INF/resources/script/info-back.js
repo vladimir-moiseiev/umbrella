@@ -4,7 +4,7 @@ angular.module('info-back', ['ngResource'])
 
         return $resource('../info/:path', {}, {
 
-            findPersons: {
+            addComment: {
                 method: 'POST',
                 params: {
                     path: "addComment"

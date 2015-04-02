@@ -10,12 +10,14 @@ import com.umbrella.model.internal.DataCreator;
 import com.umbrella.model.internal.entity.*;
 import com.umbrella.model.internal.repository.ConnectionInfoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Set;
 
 @Service
+//@Transactional(readOnly = true)
 public class PersonProvider {
 
     @Inject
@@ -64,7 +66,7 @@ public class PersonProvider {
                         return new CommentDTO(input.getId(), "",input.getDate(),input.getText() );
                     }
                 }));
-                return new PersonDTO(person.getLastName(), person.getFirstName(), person.getSecondName(), phones, person.getIdentificationNumber(),
+                return new PersonDTO(person.getId(), person.getLastName(), person.getFirstName(), person.getSecondName(), phones, person.getIdentificationNumber(),
                         person.getCity().getCity(), person.getStreet().getStreet(), person.getBuilding(), person.getApartment(), provider.getProvider(),comments);
             }
         });

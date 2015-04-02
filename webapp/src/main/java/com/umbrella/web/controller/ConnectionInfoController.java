@@ -2,6 +2,7 @@ package com.umbrella.web.controller;
 
 
 import com.umbrella.model.ConnectionInfoManager;
+import com.umbrella.model.ConnectionInfoManagerImpl;
 import com.umbrella.web.controller.request.CommentRequest;
 import com.umbrella.web.security.ExtendedUser;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,7 @@ public class ConnectionInfoController {
     @ResponseStatus(HttpStatus.OK)
     public void addComment( @RequestBody CommentRequest request,Principal principal ) {
 
-        ExtendedUser user = (ExtendedUser) principal;
-
-        connectionInfoManager.addComment(user.getUserId(), request.getRecord(), request.getText());
+        connectionInfoManager.addComment(ExtendedUser.getUserId (principal), request.getRecord(), request.getText());
 
     }
 }

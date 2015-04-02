@@ -1,5 +1,5 @@
 angular.module("dashboard-front", [
-    "ngRoute", "ngSanitize", "security-front","login-front", "search-back", "info-back", "dictionary-back"  ])
+    "ngRoute", "ngSanitize", "security-front","login-front", "search-back", "info-back", "dictionary-back","ui.bootstrap"  ])
     .run(["$rootScope", function ($rootScope) {
     }])
     .config(["$routeProvider", "$httpProvider", function ($routeProvider, $httpProvider) {
@@ -16,8 +16,10 @@ angular.module("dashboard-front", [
         //    .otherwise({
         //        redirectTo: "/"
         //    });
-    }]).controller("dashboard-controller", ["$scope", "$filter", "Search", "Dictionary", "Info",
-        function ($scope, $filter, Search, Dictionary, Info) {
+    }])
+
+    .controller("dashboard-controller", ["$scope", "$filter", "Search", "Dictionary", "Info", "Utils",
+        function ($scope, $filter, Search, Dictionary, Info, Utils) {
 
             console.log("dashboard-controller");
             $scope.person = {};
@@ -57,24 +59,71 @@ angular.module("dashboard-front", [
                 });
             };
 
-            $scope.addComment = function() {
-                var request = {
-                    record : $scope.comment.record,
-                    text : $scope.comment.text
-                };
-
-                console.log("adding comment to " + request.record);
-                Info.addComment(request, function(response) {
-
-                });
-            };
-
             $scope.validateSearch = function() {
                 if($scope.person.name == null || $scope.person.name === "" ||
                     $scope.selectedCity.name == null || $scope.selectedCity.name === "" ) {
                     return false;
                 }
                 return true;
+            };
+            $scope.openAddCommentDialog = function(record) {
+                Utils.openCommentDialog(function(result) {
+                    var request = {
+                        record : record,
+                        text : result
+                    };
+
+                    console.log("adding comment to " + record);
+                    Info.addComment(request, function(response) {
+
+                    });
+                })
             }
         }
-    ]);
+    ])
+    .controller("comment-controller", ['$scope', '$modalInstance', 'params', function ($scope, $modalInstance, params) {
+
+        $scope.submit = function () {
+            var text = $scope.newComment;
+            params.onSubmit(text);
+            $modalInstance.close();
+
+        };
+
+        $scope.cancel = function () {
+            $modalInstance.close();
+        };
+    }])
+    .factory("Utils", ["$modal", function($modal) {
+        var utils = {
+            openDialog: function (options) {
+                $modal.open({
+                    templateUrl: options.templateUrl,
+                    controller: options.controller,
+                    resolve: {
+                        params: function () {
+                            return options.paramsObj;
+                        }
+                    },
+                    backdrop: options.backdrop || "static",
+                    size: options.size,
+                    windowClass: options.windowClass || ""
+                });
+            },
+            openCommentDialog: function (onSubmit) {
+                utils.openDialog({
+                    templateUrl: "../pages/dialogs/comment.html",
+                    controller: "comment-controller",
+                    paramsObj: {
+                        title: "Новый комментарий",
+                        submitButtonText: "Добавить",
+                        onSubmit: function (text) {
+                            onSubmit(text);
+                        }
+                    }
+                });
+            }
+        };
+        return utils;
+    }])
+    ;

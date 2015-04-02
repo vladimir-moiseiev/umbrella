@@ -18,6 +18,7 @@
                 <td>{{person.city}}, {{person.street}} {{person.building}}, {{person.apartment}}</td>
                 <td>{{person.provider}}</td>
                 <td><div ng-repeat="comment in person.comments">{{comment.date}} ({{comment.user}}): {{comment.text}}</div></td>
+                <!--<td><button ng-click="openAddCommentDialog(person.id)"></button></td>-->
             </tr>
         </tbody>
     </table>

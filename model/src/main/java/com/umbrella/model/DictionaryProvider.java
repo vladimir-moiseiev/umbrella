@@ -10,12 +10,15 @@ import com.umbrella.model.internal.entity.Provider;
 import com.umbrella.model.internal.repository.CityRepository;
 import com.umbrella.model.internal.repository.ProviderRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+
 import java.util.Collection;
 import java.util.List;
 
 @Service
+//@Transactional(readOnly = true)
 public class DictionaryProvider {
     @Inject
     private ProviderRepository providerRepository;
