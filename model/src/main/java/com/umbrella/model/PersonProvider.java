@@ -71,7 +71,8 @@ public class PersonProvider {
                 List<CommentDTO> comments = Lists.newArrayList( Lists.transform(input.getComments(), new Function<Comment, CommentDTO>() {
                     @Override
                     public CommentDTO apply(Comment input) {
-                        return new CommentDTO(input.getId(), "",input.getDate(),input.getText() );
+                        User user = input.getUser();
+                        return new CommentDTO(input.getId(), user.getUsername(),input.getDate(),input.getText() );
                     }
                 }));
                 return new PersonDTO(person.getId(), person.getLastName(), person.getFirstName(), person.getSecondName(), phones, person.getIdentificationNumber(),

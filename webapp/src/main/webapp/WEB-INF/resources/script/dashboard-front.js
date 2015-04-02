@@ -1,5 +1,5 @@
 angular.module("dashboard-front", [
-    "ngRoute", "ngSanitize", "security-front","login-front", "search-back", "info-back", "dictionary-back","ui.bootstrap"  ])
+    "ngRoute", "ngSanitize", "security-front","login-front", "security-back", "search-back", "info-back", "dictionary-back","ui.bootstrap"  ])
     .run(["$rootScope", function ($rootScope) {
     }])
     .config(["$routeProvider", "$httpProvider", function ($routeProvider, $httpProvider) {
@@ -18,14 +18,15 @@ angular.module("dashboard-front", [
         //    });
     }])
 
-    .controller("dashboard-controller", ["$scope", "$filter", "Search", "Dictionary", "Info", "Utils",
-        function ($scope, $filter, Search, Dictionary, Info, Utils) {
+    .controller("dashboard-controller", ["$scope", "$filter", "SecurityBack", "Search", "Dictionary", "Info", "Utils",
+        function ($scope, $filter, SecurityBack, Search, Dictionary, Info, Utils) {
 
             console.log("dashboard-controller");
             $scope.person = {};
             $scope.persons = [];
             $scope.cities = [];
             $scope.providers = [];
+            $scope.username = '';
 
             $scope.selectedCity = {};
             $scope.selectedProvider = {};
@@ -41,6 +42,10 @@ angular.module("dashboard-front", [
             Dictionary.getProviders(function(response){
                 console.log("getProviders response", response);
                 $scope.providers = response.result;
+            });
+
+            SecurityBack.getUserDetails(function(response) {
+                $scope.username = response.result.username;
             });
 
             $scope.search = function(){
@@ -66,7 +71,7 @@ angular.module("dashboard-front", [
                 }
                 return true;
             };
-            $scope.openAddCommentDialog = function(record) {
+            $scope.openAddCommentDialog = function(record, person) {
                 Utils.openCommentDialog(function(result) {
                     var request = {
                         record : record,
@@ -75,13 +80,22 @@ angular.module("dashboard-front", [
 
                     console.log("adding comment to " + record);
                     Info.addComment(request, function(response) {
-
+                        person.comments.push({
+                            id : 0,
+                            user : $scope.username,
+                            date : new Date(),
+                            text : result
+                        })
                     });
                 })
             }
         }
     ])
     .controller("comment-controller", ['$scope', '$modalInstance', 'params', function ($scope, $modalInstance, params) {
+        $scope.newComment = '';
+
+        $scope.submitButtonText = params.submitButtonText;
+        $scope.modalTitle = params.title;
 
         $scope.submit = function () {
             var text = $scope.newComment;

@@ -4,6 +4,7 @@ package com.umbrella.model;
 import com.umbrella.model.internal.entity.Comment;
 import com.umbrella.model.internal.entity.ConnectionInfo;
 import com.umbrella.model.internal.entity.User;
+import com.umbrella.model.internal.repository.CommentRepository;
 import com.umbrella.model.internal.repository.ConnectionInfoRepository;
 import com.umbrella.model.internal.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class ConnectionInfoManagerImpl implements ConnectionInfoManager {
     private ConnectionInfoRepository connectionInfoRepository;
 
     @Inject
+    private CommentRepository commentRepository;
+
+    @Inject
     private UserRepository userRepository;
 
     @Override
@@ -33,8 +37,10 @@ public class ConnectionInfoManagerImpl implements ConnectionInfoManager {
         if(user == null) {
             throw new RuntimeException("Can't find user with id " + userId);
         }
+        Comment newComment = commentRepository.save(new Comment(user, new Date(), text));
+
         final List<Comment> comments = one.getComments();
-        comments.add(new Comment(user, new Date(), text));
+        comments.add(newComment);
         one.setComments(comments);
         connectionInfoRepository.save(one);
     }
