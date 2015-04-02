@@ -7,6 +7,7 @@
                 <th>ИНН</th>
                 <th>Адрес</th>
                 <th>Провайдер</th>
+                <th>Комментарии</th>
             </tr>
         </thead>
         <tbody>
@@ -16,6 +17,7 @@
                 <td>{{person.identificationNumber}}</td>
                 <td>{{person.city}}, {{person.street}} {{person.building}}, {{person.apartment}}</td>
                 <td>{{person.provider}}</td>
+                <td><div ng-repeat="comment in person.comments">{{comment.date}} ({{comment.user}}): {{comment.text}}</div></td>
             </tr>
         </tbody>
     </table>

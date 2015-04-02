@@ -1,11 +1,11 @@
 package com.umbrella.model.internal.entity;
 
+import com.google.common.collect.Lists;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class ConnectionInfo extends AbstractPersistable<Long> {
@@ -21,7 +21,8 @@ public class ConnectionInfo extends AbstractPersistable<Long> {
     private Date installDate;
     private Date lastUpdateDate;
 
-    private String notes;
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    private List<Comment> comments = Lists.newLinkedList();
 
     public ConnectionInfo() {
     }
@@ -74,27 +75,29 @@ public class ConnectionInfo extends AbstractPersistable<Long> {
         this.lastUpdateDate = lastUpdateDate;
     }
 
-    public String getNotes() {
-        return notes;
+
+    public List<Comment> getComments() {
+        return comments;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        //if (!super.equals(o)) return false;
 
         ConnectionInfo that = (ConnectionInfo) o;
 
         if (isActive != that.isActive) return false;
+        if (comments != null ? !comments.equals(that.comments) : that.comments != null) return false;
         if (installDate != null ? !installDate.equals(that.installDate) : that.installDate != null) return false;
         if (ipAddress != null ? !ipAddress.equals(that.ipAddress) : that.ipAddress != null) return false;
         if (lastUpdateDate != null ? !lastUpdateDate.equals(that.lastUpdateDate) : that.lastUpdateDate != null)
             return false;
-        if (notes != null ? !notes.equals(that.notes) : that.notes != null) return false;
         if (person != null ? !person.equals(that.person) : that.person != null) return false;
         if (provider != null ? !provider.equals(that.provider) : that.provider != null) return false;
 
@@ -103,14 +106,14 @@ public class ConnectionInfo extends AbstractPersistable<Long> {
 
     @Override
     public int hashCode() {
-        int result = 0; //super.hashCode();
+        int result = 0; // super.hashCode();
         result = 31 * result + (person != null ? person.hashCode() : 0);
         result = 31 * result + (provider != null ? provider.hashCode() : 0);
         result = 31 * result + (ipAddress != null ? ipAddress.hashCode() : 0);
         result = 31 * result + (isActive ? 1 : 0);
         result = 31 * result + (installDate != null ? installDate.hashCode() : 0);
         result = 31 * result + (lastUpdateDate != null ? lastUpdateDate.hashCode() : 0);
-        result = 31 * result + (notes != null ? notes.hashCode() : 0);
+        result = 31 * result + (comments != null ? comments.hashCode() : 0);
         return result;
     }
 }

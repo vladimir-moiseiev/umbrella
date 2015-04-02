@@ -3,7 +3,6 @@ package com.umbrella.web.security;
 import com.google.common.collect.Lists;
 import com.umbrella.model.security.UserProvider;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,6 +32,6 @@ public class SpringUserProvider implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserProvider.UserDetails user = userProvider.getUserDetailsByEmail(username);
-        return new User(user.username,user.password,user.isAdmin ? Lists.newArrayList(ADMIN_ROLES) : Lists.newArrayList(USER_ROLES));
+        return new ExtendedUser(user.username,user.password,user.isAdmin ? Lists.newArrayList(ADMIN_ROLES) : Lists.newArrayList(USER_ROLES),user.id);
     }
 }

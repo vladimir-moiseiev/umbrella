@@ -9,11 +9,13 @@ import javax.inject.Inject;
 @Service
 public class UserProvider {
     public class UserDetails {
+        public final long id;
         public final String username;
         public final String password;
         public final boolean isAdmin;
 
-        public UserDetails(String username, String password, boolean isAdmin) {
+        public UserDetails(long id, String username, String password, boolean isAdmin) {
+            this.id = id;
             this.username = username;
             this.password = password;
             this.isAdmin = isAdmin;
@@ -34,6 +36,6 @@ public class UserProvider {
         if (byUsername == null) {
             return null;
         }
-        return new UserDetails(byUsername.getUsername(),byUsername.getPassword(),byUsername.isAdmin());
+        return new UserDetails(byUsername.getId(), byUsername.getUsername(),byUsername.getPassword(),byUsername.isAdmin());
     }
 }

@@ -4,12 +4,10 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.umbrella.model.dto.CommentDTO;
 import com.umbrella.model.dto.PersonDTO;
 import com.umbrella.model.internal.DataCreator;
-import com.umbrella.model.internal.entity.ConnectionInfo;
-import com.umbrella.model.internal.entity.Person;
-import com.umbrella.model.internal.entity.Phone;
-import com.umbrella.model.internal.entity.Provider;
+import com.umbrella.model.internal.entity.*;
 import com.umbrella.model.internal.repository.ConnectionInfoRepository;
 import org.springframework.stereotype.Service;
 
@@ -59,8 +57,15 @@ public class PersonProvider {
                         return input.getPhone();
                     }
                 }));
+
+                List<CommentDTO> comments = Lists.newArrayList( Lists.transform(input.getComments(), new Function<Comment, CommentDTO>() {
+                    @Override
+                    public CommentDTO apply(Comment input) {
+                        return new CommentDTO(input.getId(), "",input.getDate(),input.getText() );
+                    }
+                }));
                 return new PersonDTO(person.getLastName(), person.getFirstName(), person.getSecondName(), phones, person.getIdentificationNumber(),
-                        person.getCity().getCity(), person.getStreet().getStreet(), person.getBuilding(), person.getApartment(), provider.getProvider());
+                        person.getCity().getCity(), person.getStreet().getStreet(), person.getBuilding(), person.getApartment(), provider.getProvider(),comments);
             }
         });
     }

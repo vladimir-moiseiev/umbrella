@@ -1,6 +1,7 @@
 package com.umbrella.model.dto;
 
 
+import java.util.List;
 import java.util.Set;
 
 public class PersonDTO {
@@ -18,10 +19,12 @@ public class PersonDTO {
 
     private String provider;
 
+    private List<CommentDTO> comments;
+
     public PersonDTO() {
     }
 
-    public PersonDTO(String lastName, String firstName, String secondName, Set<String> phones, String identificationNumber, String city, String street, String building, String apartment, String provider) {
+    public PersonDTO(String lastName, String firstName, String secondName, Set<String> phones, String identificationNumber, String city, String street, String building, String apartment, String provider, List<CommentDTO> comments) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -32,6 +35,7 @@ public class PersonDTO {
         this.building = building;
         this.apartment = apartment;
         this.provider = provider;
+        this.comments = comments;
     }
 
     public String getLastName() {
@@ -112,5 +116,13 @@ public class PersonDTO {
 
     public void setProvider(String provider) {
         this.provider = provider;
+    }
+
+    public List<CommentDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentDTO> comments) {
+        this.comments = comments;
     }
 }

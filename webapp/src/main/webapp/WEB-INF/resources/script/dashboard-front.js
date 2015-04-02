@@ -1,5 +1,5 @@
 angular.module("dashboard-front", [
-    "ngRoute", "ngSanitize", "security-front","login-front", "search-back", "dictionary-back"  ])
+    "ngRoute", "ngSanitize", "security-front","login-front", "search-back", "info-back", "dictionary-back"  ])
     .run(["$rootScope", function ($rootScope) {
     }])
     .config(["$routeProvider", "$httpProvider", function ($routeProvider, $httpProvider) {
@@ -16,8 +16,8 @@ angular.module("dashboard-front", [
         //    .otherwise({
         //        redirectTo: "/"
         //    });
-    }]).controller("dashboard-controller", ["$scope", "$filter", "Search", "Dictionary",
-        function ($scope, $filter, Search, Dictionary) {
+    }]).controller("dashboard-controller", ["$scope", "$filter", "Search", "Dictionary", "Info",
+        function ($scope, $filter, Search, Dictionary, Info) {
 
             console.log("dashboard-controller");
             $scope.person = {};
@@ -54,6 +54,18 @@ angular.module("dashboard-front", [
                 Search.findPersons(request, function(response){
                     console.log("find persons response", response);
                     $scope.persons = response.result;
+                });
+            };
+
+            $scope.addComment = function() {
+                var request = {
+                    record : $scope.comment.record,
+                    text : $scope.comment.text
+                };
+
+                console.log("adding comment to " + request.record);
+                Info.addComment(request, function(response) {
+
                 });
             };
 
