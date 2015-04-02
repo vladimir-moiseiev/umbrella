@@ -11,7 +11,6 @@ import com.umbrella.model.internal.entity.*;
 import com.umbrella.model.internal.repository.ConnectionInfoRepository;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -27,17 +26,19 @@ public class PersonProvider {
     private ConnectionInfoRepository connectionInfoRepository;
 
     public List<PersonDTO> findPersons(String name) {
+        LOG.info("searching for: " + name);
         List<ConnectionInfo> byPerson_lastName = connectionInfoRepository.findByPerson_LastName(name);
         return Lists.newArrayList(getPersons(byPerson_lastName));
     }
 
     public List<PersonDTO> findPersons(String name, String provider, String city) {
+        LOG.info("searching for: " + name + " in city: " + city );
         List<ConnectionInfo> byPerson_lastName = connectionInfoRepository.findByProvider_ProviderAndPerson_City_CityAndPerson_LastName(provider,city,name);
         return Lists.newArrayList(getPersons(byPerson_lastName));
     }
 
     public List<PersonDTO> findPersons(String name, String city, boolean triolan, boolean ks, boolean volya) {
-        LOG.debug("searching for: " + name + " in city: " + city + ", providers: " + triolan + " " + ks + " " + volya + " ");
+        LOG.info("searching for: " + name + " in city: " + city + ", providers: " + triolan + " " + ks + " " + volya + " ");
 
         List<ConnectionInfo> result = Lists.newLinkedList();
         if(ks) {
@@ -49,7 +50,7 @@ public class PersonProvider {
         if(volya) {
             result.addAll(connectionInfoRepository.findPerson(DataCreator.VOLYA, city, name));
         }
-        LOG.debug("searching result: " + result.size() + " items.");
+        LOG.info("searching result: " + result.size() + " items.");
         return Lists.newArrayList(getPersons(result));
     }
 
