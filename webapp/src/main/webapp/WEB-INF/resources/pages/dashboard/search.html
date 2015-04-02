@@ -12,17 +12,13 @@
                 </option>
             </select>
         </div>
-        <div class="checkbox">
-            <label>Провайдеры
-            <input type="checkbox" ng-model="selectedProvider.triolan">Триолан<br>
+        <div class="input-group">
+            <label>Провайдеры</label> <br>
+            <input type="checkbox" ng-model="selectedProvider.triolan">Триолан <br>
             <input type="checkbox" ng-model="selectedProvider.volya">Воля<br>
             <input type="checkbox" ng-model="selectedProvider.ks">Киевстар<br>
-            </label>
-            <!--<select class="form-control" ng-model="selectedProvider.name">-->
-                <!--<option ng-repeat="provider in providers"-->
-                        <!--value="{{provider.provider}}" ng-selected="selectedProvider.name==provider"> {{provider.provider}}-->
-                <!--</option>-->
-            <!--</select>-->
+
+
         </div>
         <div class="clearfix" style="margin-top: 30px;">
             <button class="btn btn-primary pull-right" ng-click="search()"   ng-disabled="!validateSearch()">Искать</button>
