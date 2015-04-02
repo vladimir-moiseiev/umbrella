@@ -1,17 +1,21 @@
 package com.umbrella.model;
 
 import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.umbrella.model.dto.PersonDTO;
 import com.umbrella.model.internal.DataCreator;
 import com.umbrella.model.internal.entity.ConnectionInfo;
 import com.umbrella.model.internal.entity.Person;
+import com.umbrella.model.internal.entity.Phone;
 import com.umbrella.model.internal.entity.Provider;
 import com.umbrella.model.internal.repository.ConnectionInfoRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PersonProvider {
@@ -49,7 +53,13 @@ public class PersonProvider {
             public PersonDTO apply(ConnectionInfo input) {
                 Person person = input.getPerson();
                 Provider provider = input.getProvider();
-                return new PersonDTO(person.getLastName(), person.getFirstName(), person.getSecondName(), person.getPhone(), person.getIdentificationNumber(),
+                Set<String> phones = Sets.newHashSet(Collections2.transform(person.getPhones(), new Function<Phone, String>() {
+                    @Override
+                    public String apply(Phone input) {
+                        return input.getPhone();
+                    }
+                }));
+                return new PersonDTO(person.getLastName(), person.getFirstName(), person.getSecondName(), phones, person.getIdentificationNumber(),
                         person.getCity().getCity(), person.getStreet().getStreet(), person.getBuilding(), person.getApartment(), provider.getProvider());
             }
         });

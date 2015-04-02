@@ -6,6 +6,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.umbrella.app.KsRow;
 import com.umbrella.app.TriolanRow;
 import com.umbrella.app.VolyaRow;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 //todo: phones list in entity
 
@@ -64,7 +66,7 @@ public class DatabaseImporter {
 
             City city = getCity(citiesMap, row.city);
             Street street = getStreet(streetsMap,row.street);
-            Person person = getPerson(personMap, row.lastName, row.firstName, row.secondName, row.phone2, "",
+            Person person = getPerson(personMap, row.lastName, row.firstName, row.secondName, Sets.newHashSet(row.phone1, row.phone2, row.phone3, row.phone4), "",
                     city, street, row.building, row.apartment);
 
 
@@ -97,7 +99,7 @@ public class DatabaseImporter {
 
             City cityEntity = getCity(citiesMap, city);
             Street streetEntity = getStreet(streetsMap,street);
-            Person person = getPerson(personMap, lastName, firstName, secondName, phones.size() > 0 ? phones.get(0) : "", "",
+            Person person = getPerson(personMap, lastName, firstName, secondName, Sets.newHashSet(phones), "",
                     cityEntity, streetEntity, building, apartment);
 
             ConnectionInfo connectionInfo = getConnection(connectionMap,person,triolan);
@@ -129,7 +131,7 @@ public class DatabaseImporter {
 
             City cityEntity = getCity(citiesMap, city);
             Street streetEntity = getStreet(streetsMap,street);
-            Person person = getPerson(personMap, lastName, firstName, secondName, phones.size() > 0 ? phones.get(0) : "", "",
+            Person person = getPerson(personMap, lastName, firstName, secondName, Sets.newHashSet(phones), "",
                     cityEntity, streetEntity, building, apartment);
 
             ConnectionInfo connectionInfo = getConnection(connectionMap,person,volya);
@@ -266,9 +268,19 @@ public class DatabaseImporter {
         return connectionInfoFromMap;
     }
 
-    private Person getPerson(final Map<Person, Person> map, String lastName, String firstName, String secondName, String phone,
+    private Person getPerson(final Map<Person, Person> map, String lastName, String firstName, String secondName, Set<String> phones,
                              String identificationNumber, City city, Street street, String building, String apartment) {
-        Person person = new Person(lastName, firstName, secondName, phone, identificationNumber,
+
+        Set<Phone> phonesEntities = Sets.newHashSet(Collections2.transform(phones, new Function<String, Phone>() {
+            @Override
+            public Phone apply(String input) {
+                Phone phone = new Phone();
+                phone.setPhone(input);
+                return phone;
+            }
+        }));
+
+        Person person = new Person(lastName, firstName, secondName, phonesEntities, identificationNumber,
                 city, street, building, apartment);
 
         person.setCity(city);

@@ -1,12 +1,14 @@
 package com.umbrella.model.dto;
 
 
+import java.util.Set;
+
 public class PersonDTO {
     private String lastName;
     private String firstName;
     private String secondName;
 
-    private String phone;
+    private Set<String> phones;
     private String identificationNumber;
 
     private String city;
@@ -19,11 +21,11 @@ public class PersonDTO {
     public PersonDTO() {
     }
 
-    public PersonDTO(String lastName, String firstName, String secondName, String phone, String identificationNumber, String city, String street, String building, String apartment, String provider) {
+    public PersonDTO(String lastName, String firstName, String secondName, Set<String> phones, String identificationNumber, String city, String street, String building, String apartment, String provider) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.secondName = secondName;
-        this.phone = phone;
+        this.phones = phones;
         this.identificationNumber = identificationNumber;
         this.city = city;
         this.street = street;
@@ -56,12 +58,12 @@ public class PersonDTO {
         this.secondName = secondName;
     }
 
-    public String getPhone() {
-        return phone;
+    public Set<String> getPhones() {
+        return phones;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhones(Set<String> phones) {
+        this.phones = phones;
     }
 
     public String getIdentificationNumber() {

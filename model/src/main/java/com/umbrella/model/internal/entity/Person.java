@@ -1,8 +1,10 @@
 package com.umbrella.model.internal.entity;
 
+import com.google.common.collect.Sets;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Person extends AbstractPersistable<Long> {
@@ -10,7 +12,8 @@ public class Person extends AbstractPersistable<Long> {
     private String firstName;
     private String secondName; //otchestvo
 
-    private String phone;
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    private Set<Phone> phones = Sets.newHashSet();
     private String identificationNumber;
 
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.PERSIST} )
@@ -24,17 +27,24 @@ public class Person extends AbstractPersistable<Long> {
     public Person() {
     }
 
-    public Person(String lastName, String firstName, String secondName, String phone, String identificationNumber,
-                  City city, Street street, String building, String apartment) {
+    public Person(String lastName, String firstName, String secondName, Set<Phone> phones, String identificationNumber, City city, Street street, String building, String apartment) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.secondName = secondName;
-        this.phone = phone;
+        this.phones = phones;
         this.identificationNumber = identificationNumber;
         this.city = city;
         this.street = street;
         this.building = building;
         this.apartment = apartment;
+    }
+
+    public Set<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(Set<Phone> phones) {
+        this.phones = phones;
     }
 
     public String getLastName() {
@@ -61,13 +71,6 @@ public class Person extends AbstractPersistable<Long> {
         this.secondName = secondName;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 
     public String getIdentificationNumber() {
         return identificationNumber;
@@ -124,7 +127,7 @@ public class Person extends AbstractPersistable<Long> {
         if (identificationNumber != null ? !identificationNumber.equals(person.identificationNumber) : person.identificationNumber != null)
             return false;
         if (lastName != null ? !lastName.equals(person.lastName) : person.lastName != null) return false;
-        if (phone != null ? !phone.equals(person.phone) : person.phone != null) return false;
+        if (phones != null ? !phones.equals(person.phones) : person.phones != null) return false;
         if (secondName != null ? !secondName.equals(person.secondName) : person.secondName != null) return false;
         if (street != null ? !street.equals(person.street) : person.street != null) return false;
 
@@ -133,11 +136,11 @@ public class Person extends AbstractPersistable<Long> {
 
     @Override
     public int hashCode() {
-        int result = 0;//super.hashCode();
+        int result = 0; //super.hashCode();
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (secondName != null ? secondName.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (phones != null ? phones.hashCode() : 0);
         result = 31 * result + (identificationNumber != null ? identificationNumber.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (street != null ? street.hashCode() : 0);

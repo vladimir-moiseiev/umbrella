@@ -12,7 +12,7 @@
         <tbody>
             <tr ng-repeat="person in persons">
                 <td>{{person.lastName}} {{person.firstName}} {{person.secondName}}</td>
-                <td>{{person.phone}}</td>
+                <td><div ng-repeat="phone in person.phones">{{phone}}</div></td>
                 <td>{{person.identificationNumber}}</td>
                 <td>{{person.city}}, {{person.street}} {{person.building}}, {{person.apartment}}</td>
                 <td>{{person.provider}}</td>
