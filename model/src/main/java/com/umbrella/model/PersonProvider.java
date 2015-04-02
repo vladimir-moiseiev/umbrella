@@ -9,6 +9,7 @@ import com.umbrella.model.dto.PersonDTO;
 import com.umbrella.model.internal.DataCreator;
 import com.umbrella.model.internal.entity.*;
 import com.umbrella.model.internal.repository.ConnectionInfoRepository;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,8 @@ import java.util.Set;
 @Service
 //@Transactional(readOnly = true)
 public class PersonProvider {
+
+    private Logger LOG = Logger.getLogger(PersonProvider.class);
 
     @Inject
     private ConnectionInfoRepository connectionInfoRepository;
@@ -34,6 +37,8 @@ public class PersonProvider {
     }
 
     public List<PersonDTO> findPersons(String name, String city, boolean triolan, boolean ks, boolean volya) {
+        LOG.debug("searching for: " + name + " in city: " + city + ", providers: " + triolan + " " + ks + " " + volya + " ");
+
         List<ConnectionInfo> result = Lists.newLinkedList();
         if(ks) {
             result.addAll(connectionInfoRepository.findPerson(DataCreator.KYIVSTAR, city, name));
@@ -44,6 +49,7 @@ public class PersonProvider {
         if(volya) {
             result.addAll(connectionInfoRepository.findPerson(DataCreator.VOLYA, city, name));
         }
+        LOG.debug("searching result: " + result.size() + " items.");
         return Lists.newArrayList(getPersons(result));
     }
 
