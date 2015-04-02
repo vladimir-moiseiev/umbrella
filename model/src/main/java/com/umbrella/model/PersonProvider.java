@@ -36,13 +36,13 @@ public class PersonProvider {
     public List<PersonDTO> findPersons(String name, String city, boolean triolan, boolean ks, boolean volya) {
         List<ConnectionInfo> result = Lists.newLinkedList();
         if(ks) {
-            result.addAll(connectionInfoRepository.findByProvider_ProviderAndPerson_City_CityAndPerson_LastName(DataCreator.KYIVSTAR, city, name));
+            result.addAll(connectionInfoRepository.findPerson(DataCreator.KYIVSTAR, city, name));
         }
         if(triolan) {
-            result.addAll(connectionInfoRepository.findByProvider_ProviderAndPerson_City_CityAndPerson_LastName(DataCreator.TRIOLAN, city, name));
+            result.addAll(connectionInfoRepository.findPerson(DataCreator.TRIOLAN, city, name));
         }
         if(volya) {
-            result.addAll(connectionInfoRepository.findByProvider_ProviderAndPerson_City_CityAndPerson_LastName(DataCreator.VOLYA, city, name));
+            result.addAll(connectionInfoRepository.findPerson(DataCreator.VOLYA, city, name));
         }
         return Lists.newArrayList(getPersons(result));
     }
