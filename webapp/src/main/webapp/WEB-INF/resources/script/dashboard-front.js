@@ -34,6 +34,8 @@ angular.module("dashboard-front", [
             $scope.selectedProvider.ks = false;
             $scope.selectedProvider.volya = false;
 
+            $scope.isSearching = false;
+
             Dictionary.getCities(function(response){
                 console.log("getCities response", response);
                 $scope.cities = response.result;
@@ -49,6 +51,7 @@ angular.module("dashboard-front", [
             });
 
             $scope.search = function(){
+                $scope.isSearching = true;
                 var request = {
                     lastName : $scope.person.name,
                     triolan : $scope.selectedProvider.triolan,
@@ -61,6 +64,7 @@ angular.module("dashboard-front", [
                 Search.findPersons(request, function(response){
                     console.log("find persons response", response);
                     $scope.persons = response.result;
+                    $scope.isSearching = false;
                 });
             };
 
@@ -91,6 +95,24 @@ angular.module("dashboard-front", [
             }
         }
     ])
+    .controller("admin-controller", ["$scope", "$rootScope", "SecurityBack", function ($scope, $rootScope, SecurityBack) {
+
+        console.log("admin-controller");
+
+        var users = [];
+
+        $scope.isUserDetailsLoaded = false;
+
+        $rootScope.getUserDetails = function () {
+            return angular.copy(userDetails);
+        };
+
+        SecurityBack.getUsers({}, (function success(response) {
+            users = response.result;
+
+        }));
+
+    }])
     .controller("comment-controller", ['$scope', '$modalInstance', 'params', function ($scope, $modalInstance, params) {
         $scope.newComment = '';
 
