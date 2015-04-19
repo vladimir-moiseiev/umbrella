@@ -9,6 +9,12 @@ angular.module("security-back", ["ngResource"])
                 params: {
                     path: "getUserDetails"
                 }
+            },
+            "getUsers": {
+                method: "GET",
+                params: {
+                    path: "getUsers"
+                }
             }
         })
     }]);
