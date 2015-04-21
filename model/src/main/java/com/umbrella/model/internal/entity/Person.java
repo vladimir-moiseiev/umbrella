@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -23,6 +24,8 @@ public class Person extends AbstractPersistable<Long> {
 
     private String building;
     private String apartment;
+
+    private Date createdDate = new Date();
 
     public Person() {
     }
@@ -112,6 +115,14 @@ public class Person extends AbstractPersistable<Long> {
         this.apartment = apartment;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -123,6 +134,7 @@ public class Person extends AbstractPersistable<Long> {
         if (apartment != null ? !apartment.equals(person.apartment) : person.apartment != null) return false;
         if (building != null ? !building.equals(person.building) : person.building != null) return false;
         if (city != null ? !city.equals(person.city) : person.city != null) return false;
+        if (createdDate != null ? !createdDate.equals(person.createdDate) : person.createdDate != null) return false;
         if (firstName != null ? !firstName.equals(person.firstName) : person.firstName != null) return false;
         if (identificationNumber != null ? !identificationNumber.equals(person.identificationNumber) : person.identificationNumber != null)
             return false;
@@ -146,6 +158,7 @@ public class Person extends AbstractPersistable<Long> {
         result = 31 * result + (street != null ? street.hashCode() : 0);
         result = 31 * result + (building != null ? building.hashCode() : 0);
         result = 31 * result + (apartment != null ? apartment.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
         return result;
     }
 }

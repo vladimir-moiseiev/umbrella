@@ -21,6 +21,8 @@ public class ConnectionInfo extends AbstractPersistable<Long> {
     private Date installDate;
     private Date lastUpdateDate;
 
+    private Date createdDate = new Date();
+
     @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private List<Comment> comments = Lists.newLinkedList();
 
@@ -84,6 +86,14 @@ public class ConnectionInfo extends AbstractPersistable<Long> {
         this.comments = comments;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -98,6 +108,7 @@ public class ConnectionInfo extends AbstractPersistable<Long> {
         if (ipAddress != null ? !ipAddress.equals(that.ipAddress) : that.ipAddress != null) return false;
         if (lastUpdateDate != null ? !lastUpdateDate.equals(that.lastUpdateDate) : that.lastUpdateDate != null)
             return false;
+        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
         if (person != null ? !person.equals(that.person) : that.person != null) return false;
         if (provider != null ? !provider.equals(that.provider) : that.provider != null) return false;
 
@@ -113,6 +124,7 @@ public class ConnectionInfo extends AbstractPersistable<Long> {
         result = 31 * result + (isActive ? 1 : 0);
         result = 31 * result + (installDate != null ? installDate.hashCode() : 0);
         result = 31 * result + (lastUpdateDate != null ? lastUpdateDate.hashCode() : 0);
+        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
         result = 31 * result + (comments != null ? comments.hashCode() : 0);
         return result;
     }

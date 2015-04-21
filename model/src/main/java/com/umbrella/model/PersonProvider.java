@@ -76,7 +76,7 @@ public class PersonProvider {
                     }
                 }));
                 return new PersonDTO(person.getId(), person.getLastName(), person.getFirstName(), person.getSecondName(), phones, person.getIdentificationNumber(),
-                        person.getCity().getCity(), person.getStreet().getStreet(), person.getBuilding(), person.getApartment(), provider.getProvider(),comments);
+                        person.getCity().getCity(), person.getStreet().getStreet(), person.getBuilding(), person.getApartment(), provider.getProvider(),comments, person.getCreatedDate());
             }
         });
     }

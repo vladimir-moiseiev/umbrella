@@ -1,6 +1,7 @@
 package com.umbrella.model.dto;
 
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -22,10 +23,14 @@ public class PersonDTO {
 
     private List<CommentDTO> comments;
 
+    private Date createdDate;
+
     public PersonDTO() {
     }
 
-    public PersonDTO(long id, String lastName, String firstName, String secondName, Set<String> phones, String identificationNumber, String city, String street, String building, String apartment, String provider, List<CommentDTO> comments) {
+    public PersonDTO(long id, String lastName, String firstName, String secondName, Set<String> phones,
+                     String identificationNumber, String city, String street, String building, String apartment,
+                     String provider, List<CommentDTO> comments, Date createdDate) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -38,6 +43,7 @@ public class PersonDTO {
         this.apartment = apartment;
         this.provider = provider;
         this.comments = comments;
+        this.createdDate = createdDate;
     }
 
     public long getId() {
@@ -134,5 +140,13 @@ public class PersonDTO {
 
     public void setComments(List<CommentDTO> comments) {
         this.comments = comments;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }
