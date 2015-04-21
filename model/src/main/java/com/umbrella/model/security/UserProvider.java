@@ -7,31 +7,59 @@ import com.umbrella.model.internal.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class UserProvider {
+
+    public static final String ADMIN = "admin";
+    public static final String PWD = "pwd";
+
     public class UserDetails {
+
         public final long id;
         public final String username;
         public final String password;
+        public final Date validUntil;
         public final boolean isAdmin;
-
-        public UserDetails(long id, String username, String password, boolean isAdmin) {
+        public UserDetails(long id, String username, String password, Date validUntil, boolean isAdmin) {
             this.id = id;
             this.username = username;
             this.password = password;
+            this.validUntil = validUntil;
             this.isAdmin = isAdmin;
         }
-    }
 
+    }
     @Inject
     private UserRepository userRepository;
 
-    public void createUser(String username, String password, boolean isAdmin) {
+    public long createUser(String username, String password, boolean isAdmin, Date validUntil) {
         if(userRepository.findByUsername(username) == null) {
-            userRepository.save(new User(username, password, isAdmin));
+            return userRepository.save(new User(username, password, isAdmin, validUntil)).getId();
         }
+        throw new RuntimeException("User " + username + "already exist.");
+    }
+
+    public void setPassword(long id, String password) {
+        User user = userRepository.findOne(id);
+        if( user == null) {
+            throw new RuntimeException("Can't find user with id: " + id);
+        }
+
+        user.setPassword(password);
+        userRepository.save(user);
+    }
+
+    public void setValidUntil(long id, Date validUntil) {
+        User user = userRepository.findOne(id);
+        if( user == null) {
+            throw new RuntimeException("Can't find user with id: " + id);
+        }
+
+        user.setValidUntil(validUntil);
+        userRepository.save(user);
     }
 
     public UserDetails getUserDetailsByEmail(String email) {
@@ -43,7 +71,7 @@ public class UserProvider {
     }
 
     private UserDetails getUserDetails(User byUsername) {
-        return new UserDetails(byUsername.getId(), byUsername.getUsername(),byUsername.getPassword(),byUsername.isAdmin());
+        return new UserDetails(byUsername.getId(), byUsername.getUsername(),byUsername.getPassword(), byUsername.getValidUntil(), byUsername.isAdmin());
     }
 
     public List<UserDetails> getAllUsers() {
@@ -54,6 +82,15 @@ public class UserProvider {
                 return getUserDetails(input);
             }
         }));
+
+    }
+
+    public void removeUser(long userId) {
+        User one = userRepository.findOne(userId);
+        if(one != null && one.getUsername().equals(ADMIN)) {
+            throw new RuntimeException("Can't remove admin");
+        }
+        userRepository.delete(userId);
 
     }
 }

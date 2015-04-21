@@ -8,13 +8,9 @@
                             http://www.springframework.org/schema/security
                     http://www.springframework.org/schema/security/spring-security.xsd">
 
-    <http pattern="/css/**" security="none" />
-    <http pattern="/fonts/**" security="none" />
-    <http pattern="/img/**" security="none" />
     <http pattern="/lib/**" security="none" />
     <http pattern="/script/**" security="none" />
     <http pattern="/img/favicon.ico" security="none" />
-    <http pattern="/common-js/**" security="none" />
 
     <http use-expressions="true" >
         <intercept-url pattern="/pages/login.html" access="permitAll" />
@@ -25,7 +21,8 @@
 
         <form-login login-page="/pages/login.html"
                     login-processing-url="/perform_login"
-                    default-target-url="/pages/dashboard.html"/>
+                    default-target-url="/pages/dashboard.html"
+                always-use-default-target="true"/>
 
 
         <logout delete-cookies="JSESSIONID" logout-success-url="/pages/login.html" />

@@ -1,0 +1,32 @@
+<div>
+    <div class="modal-header clearfix">
+        <h2 class="modal-title">{{modalTitle}}</h2>
+        <a ng-click="cancel();"><i class="icon close red"></i></a>
+    </div>
+
+    <div class="modal-body">
+            <div class="form-group" ng-disabled="!newUser">
+                <input ng-model="username" type="text"/>
+            </div>
+            <div class="form-group" ng-disabled="!changingPassword">
+                <input ng-model="password" type="password"/>
+                <input ng-model="repeatPassword" type="password"/>
+            </div>
+            <div class="form-group" ng-disabled="!newUser">
+                <input ng-model="admin" type="checkbox"/>
+            </div>
+            <div class="form-group" ng-disabled="!changingValidUntil">
+                <input ng-model="validUntil" type="date"/>
+            </div>
+    </div>
+
+
+    <div class="modal-footer">
+        <button ng-click="submit()" class="btn btn-primary pull-right" ng-disabled="isInputValid()">
+            {{submitButtonText}}
+        </button>
+        <button ng-click="cancel()" class="btn btn-default">
+            Отмена
+        </button>
+    </div>
+</div>

@@ -54,24 +54,16 @@
 
 
 </head>
-<body ng-controller="dashboard-controller">
+<!--<body ng-controller="dashboard-controller">-->
+<body>
 <div class="main-wrapper container">
-    <div class="row">
-        <div class="col-lg-12">
-            <!--<div ng-include="'header.html'"></div>-->
-            <div class="ng-include: '../pages/dashboard/search.html'"></div>
-        </div>
 
-        <div class="col-lg-12">
-            <div class="ng-include: '../pages/dashboard/user-dashboard.html'"></div>
-        </div>
+    <div ng-include="'header.html'"></div>
 
+    <div class="clearfix content">
+        <div ng-view=""></div>
     </div>
 
-
-    <!--<div class="clearfix content">-->
-        <!--<div ng-view=""></div>-->
-    <!--</div>-->
 </div>
 <!--<div class="ng-include: 'footer.html'"></div>-->
 

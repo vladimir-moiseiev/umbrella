@@ -15,6 +15,19 @@ angular.module("security-back", ["ngResource"])
                 params: {
                     path: "getUsers"
                 }
+            },
+            "setUser": {
+                method: "POST",
+                params: {
+                    path: "setUser"
+                }
+            }
+            ,
+            "removeUser": {
+                method: "DELETE",
+                params: {
+                    path: "removeUser"
+                }
             }
         })
     }]);
