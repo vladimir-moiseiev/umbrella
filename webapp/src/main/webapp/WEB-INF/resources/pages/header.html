@@ -1,10 +1,17 @@
 <div class="header clearfix">
-    <nav>
-        <ul class="navbar nav-pills pull-right">
-            <li ng-if="isUserAdmin" role="presentation"><a ng-href="#!/admin">Настройки</a></li>
-            <li role="presentation">{{username}}</li>
-            <li><a href="../j_spring_security_logout">Выход</a></li>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-if="isUserAdmin" role="presentation"><a ng-href="#!/admin">Настройки</a></li>
+                <li class="dropdown" role="presentation">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{username}}<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="../j_spring_security_logout">Выход</a></li>
+                    </ul>
+                </li>
 
-        </ul>
+            </ul>
+        </div>
+
     </nav>
 </div>

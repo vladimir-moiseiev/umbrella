@@ -1,5 +1,5 @@
 .main-wrapper{
-    width: 811px;
+    max-width: 1200px;
     margin: 50px auto;
 }
 
@@ -7,4 +7,54 @@
     max-width: 330px;
     padding: 15px;
     margin: 0 auto;
+}
+
+.form-group input[type="checkbox"]{
+    width: 17px;
+    height: 17px;
+    margin-right: 5px;
+    margin-top: 2px;
+    float: left;
+}
+
+.form-group .small-label{
+    font-size: 13px;
+    color: #666;
+    line-height: 20px;
+}
+
+.add-holder{
+    vertical-align: middle;
+}
+
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+}
+
+button.close {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+}
+
+.modal-header .close {
+    margin-top: 3px;
+    font-size: 34px;
+}
+
+.full-width{
+    width: 100%;
+}
+
+textarea{
+    min-height: 100px;
 }

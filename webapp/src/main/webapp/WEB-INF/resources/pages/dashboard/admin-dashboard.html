@@ -1,12 +1,14 @@
 <div class="center-holder dashboard">
-
-    <div><button ng-click="openAddUserDialog()">Добавить пользователя</button></div>
+    <div class="well"><button class="btn btn-primary" ng-click="openAddUserDialog()">Добавить пользователя</button></div>
     <table class="table table-striped table-hover" ng-if="users.length > 0">
         <thead>
             <tr>
                 <th>Логин</th>
                 <th>Админ</th>
                 <th>Действителен до</th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -14,9 +16,9 @@
                 <td><p ng-class="isUserValid(user)"><strong>{{user.username}}</strong></p></td>
                 <td><span class="glyphicon glyphicon-ok-circle" aria-hidden="true" ng-if="user.admin"></span></td>
                 <td>{{user.validUntil | date:"dd-MM-yyyy" }}</td>
-                <td><button ng-if="user.username != 'admin'"  ng-click="openSetValidUntilDialog(user)">Установить дату</button></td>
-                <td><button ng-click="openSetPasswordDialog(user)">Установить пароль</button></td>
-                <td><button ng-if="user.username != 'admin'" ng-click="removeUser(user)">Удалить</button></td>
+                <td><button class="btn btn-primary" ng-if="user.username != 'admin'"  ng-click="openSetValidUntilDialog(user)">Установить дату</button></td>
+                <td><button class="btn btn-primary" ng-click="openSetPasswordDialog(user)">Установить пароль</button></td>
+                <td><button class="btn btn-primary" ng-if="user.username != 'admin'" ng-click="removeUser(user)">Удалить</button></td>
             </tr>
         </tbody>
     </table>

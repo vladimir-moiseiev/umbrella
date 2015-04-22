@@ -1,9 +1,15 @@
 <div class="center-holder dashboard">
 
     <div class="ng-include: '../pages/dashboard/search.html'"></div>
+    <div ng-if="persons.length == 0 && isSearching == false" class="well">
+        <p class="text-center">Нет записей..</p>
+    </div>
 
-    <div ng-if="persons.length == 0 && isSearching == false">Нет записей.</div>
-    <div ng-if="isSearching">Поиск...</div>
+    <div ng-if="isSearching" class="well text-center">
+        <p>Поиск...</p>
+    </div>
+
+
 
     <table class="table table-striped table-hover" ng-if="isSearching == false && persons.length > 0">
         <thead>
@@ -15,6 +21,7 @@
                 <th>Провайдер</th>
                 <th>Добавлен</th>
                 <th>Комментарии</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -26,7 +33,7 @@
                 <td>{{person.provider}}</td>
                 <td>{{person.createdDate | date:'dd-MM-yyyy' }}</td>
                 <td><div ng-repeat="comment in person.comments">{{comment.date | date:'dd-MM-yyyy HH:mm' }} ({{comment.user}}): {{comment.text}}</div></td>
-                <td><button ng-click="openAddCommentDialog(person.id, person)">Добавить</button></td>
+                <td class="add-holder"><button ng-click="openAddCommentDialog(person.id, person)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td>
             </tr>
         </tbody>
     </table>

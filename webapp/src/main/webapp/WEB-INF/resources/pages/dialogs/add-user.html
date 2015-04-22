@@ -1,32 +1,42 @@
 <div>
     <div class="modal-header clearfix">
+        <button type="button" class="close btn" data-dismiss="modal" aria-label="Close" ng-click="cancel();"><span aria-hidden="true">&times;</span></button>
         <h2 class="modal-title">{{modalTitle}}</h2>
-        <a ng-click="cancel();"><i class="icon close red"></i></a>
     </div>
 
     <div class="modal-body">
+        <form class="">
             <div class="form-group" ng-disabled="!newUser">
-                <input ng-model="username" type="text"/>
+                <label>Имя</label>
+                <input class="form-control" ng-model="username" type="text"/>
             </div>
             <div class="form-group" ng-disabled="!changingPassword">
-                <input ng-model="password" type="password"/>
-                <input ng-model="repeatPassword" type="password"/>
+                <label>Пароль</label>
+                <input  class="form-control" ng-model="password" type="password"/>
+            </div>
+
+            <div class="form-group">
+                <label>Повторите пароль</label>
+                <input  class="form-control" ng-model="repeatPassword" type="password"/>
             </div>
             <div class="form-group" ng-disabled="!newUser">
-                <input ng-model="admin" type="checkbox"/>
+                <label for="admin">Админ</label>
+                <input ng-model="admin" id="admin" type="checkbox"/>
             </div>
             <div class="form-group" ng-disabled="!changingValidUntil">
-                <input ng-model="validUntil" type="date"/>
+                <label>Годен до</label>
+                <input  class="form-control" ng-model="validUntil" type="date"/>
             </div>
+        </form>
     </div>
 
 
     <div class="modal-footer">
-        <button ng-click="submit()" class="btn btn-primary pull-right" ng-disabled="isInputValid()">
-            {{submitButtonText}}
-        </button>
         <button ng-click="cancel()" class="btn btn-default">
             Отмена
+        </button>
+        <button ng-click="submit()" class="btn btn-primary" ng-disabled="isInputValid()">
+            {{submitButtonText}}
         </button>
     </div>
 </div>
