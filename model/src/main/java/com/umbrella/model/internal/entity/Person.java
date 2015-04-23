@@ -8,6 +8,10 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
+@Table(indexes =  {
+        @Index(columnList = "lastName"),
+        @Index(columnList = "firstName"),
+})
 public class Person extends AbstractPersistable<Long> {
     private String lastName;
     private String firstName;

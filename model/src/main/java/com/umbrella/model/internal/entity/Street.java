@@ -4,8 +4,11 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity
+@Table(indexes = @Index(columnList = "street"))
 public class Street extends AbstractPersistable<Long> {
     @Column(unique = true)
     private String street;
